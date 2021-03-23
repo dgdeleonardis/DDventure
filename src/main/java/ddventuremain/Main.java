@@ -7,10 +7,16 @@ import view.DDventureView;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) {
+
+        // DDventureView.getInstance().createAnOpenMainMenuScene();
         DDventureView.getInstance().setPrimaryStage(primaryStage);
-        DDventureView.getInstance().createAnOpenMainMenuScene();
         DDventureView.getInstance().getPrimaryStage().setTitle("DDventure");
+        DDventureView.getInstance().getMusicManager().playMusic();
+        // test section
+        DDventureView.getInstance().createAnOpenMainMenuScene();
+        // end test section
+        DDventureView.getInstance().getPrimaryStage().setResizable(true);
         DDventureView.getInstance().getPrimaryStage().show();
     }
 
@@ -18,4 +24,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }

@@ -6,9 +6,10 @@ import javafx.stage.Stage;
 public class DDventureView implements IView{
 
     private static DDventureView instance = null;
+    private static MusicManager musicManager= null;;
 
     private Stage primaryStage = null;
-    private Stage secondaryStage;
+    private Stage secondaryStage = null;
 
     private Scene mainMenuScene;
     private Scene optionScene;
@@ -16,7 +17,7 @@ public class DDventureView implements IView{
     private Scene playerScene;
     private Scene mapScene;
     private Scene gameScene;
-    private Scene iniativeScene;
+    private Scene initiativeScene;
     private Scene pauseScene;
     private Scene victoryScene;
 
@@ -50,18 +51,24 @@ public class DDventureView implements IView{
     }
 
     @Override
+    public MusicManager getMusicManager() {
+        return MusicManager.getInstance();
+    }
+
+    @Override
     public void getOpenMainScene() {
     }
 
     @Override
     public void createAnOpenMainMenuScene() {
-        this.mainMenuScene = new Scene(new MainMenu(), 300, 300);
+        this.mainMenuScene = new Scene(new MainMenu(), 1280, 720);
         this.primaryStage.setScene(this.mainMenuScene);
     }
 
     @Override
     public void createAnOpenOptionScene() {
-
+        this.optionScene = new Scene(new OptionMenu(), 1280, 720);
+        this.primaryStage.setScene(this.optionScene);
     }
 
     @Override
@@ -71,7 +78,8 @@ public class DDventureView implements IView{
 
     @Override
     public void createAnOpenTeamScene() {
-
+        this.teamScene = new Scene(new TeamCreationWindow(), 1280, 720);
+        this.primaryStage.setScene(this.teamScene);
     }
 
     @Override

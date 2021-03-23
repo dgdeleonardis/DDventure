@@ -13,6 +13,8 @@ public interface IView {
 
     public Stage getSecondaryStage();
 
+    public MusicManager getMusicManager();
+
     public void getOpenMainScene();
 
     public void createAnOpenMainMenuScene();
