@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class OptionMenu extends BorderPane {
     // main pane attributes
@@ -16,6 +17,7 @@ public class OptionMenu extends BorderPane {
     private static final String FONT_FILE_NAME = "fonts/alagard.ttf";
     private static final int TITLE_FONT_SIZE = 64;
     private static final int BUTTON_FONT_SIZE = 24;
+    private final Stage currentStage;
 
     // top section attributes
     private final Label titleLabel;
@@ -30,8 +32,9 @@ public class OptionMenu extends BorderPane {
     private final Button guideButton;
     private final Button backToMainMenuButton;
 
-    public OptionMenu() {
+    public OptionMenu(Stage currentStage) {
         super();
+        this.currentStage = currentStage;
         // set background
         BackgroundImage backgroundImage = new BackgroundImage(
                 new Image(this.getClass().getResourceAsStream(BACKGROUND_IMAGE_FILE_NAME)),
@@ -91,11 +94,16 @@ public class OptionMenu extends BorderPane {
 
         this.guideButton = new Button("Guida");
         this.guideButton.setFont(buttonFont);
-        this.guideButton.setOnAction(event -> DDventureView.getInstance().createAnOpenGuideScene());
+        this.guideButton.setOnAction(event -> DDventureView.getInstance().createAnOpenGuideScene(currentStage));
 
         this.backToMainMenuButton = new Button("Applica e torna al menu");
         this.backToMainMenuButton.setFont(buttonFont);
-        this.backToMainMenuButton.setOnAction(event -> DDventureView.getInstance().createAnOpenMainMenuScene());
+        this.backToMainMenuButton.setOnAction(event -> {
+            if(this.currentStage.equals(DDventureView.getInstance().getPrimaryStage()))
+                DDventureView.getInstance().createAnOpenMainMenuScene();
+            else if(this.currentStage.equals(DDventureView.getInstance().getSecondaryStage()))
+                DDventureView.getInstance().createAnOpenPauseStage();
+        });
 
         this.bottomPane.getChildren().addAll(this.guideButton, this.backToMainMenuButton);
         AnchorPane.setLeftAnchor(this.guideButton, 10.0);

@@ -19,9 +19,9 @@ public interface IView {
 
     public void createAnOpenMainMenuScene();
 
-    public void createAnOpenOptionScene();
+    public void createAnOpenOptionScene(Stage currentStage);
 
-    public void createAnOpenGuideScene();
+    public void createAnOpenGuideScene(Stage currentStage);
 
     public void createAnOpenTeamScene();
 

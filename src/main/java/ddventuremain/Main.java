@@ -9,7 +9,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        // DDventureView.getInstance().createAnOpenMainMenuScene();
         DDventureView.getInstance().setPrimaryStage(primaryStage);
         DDventureView.getInstance().getPrimaryStage().setTitle("DDventure");
         DDventureView.getInstance().getMusicManager().playMusic();
@@ -18,6 +17,10 @@ public class Main extends Application {
         // end test section
         DDventureView.getInstance().getPrimaryStage().setResizable(true);
         DDventureView.getInstance().getPrimaryStage().show();
+
+        // test section part 2
+            DDventureView.getInstance().createAnOpenPauseStage();
+        // end test section
     }
 
 

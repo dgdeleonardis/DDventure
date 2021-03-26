@@ -69,7 +69,7 @@ public class MainMenu extends BorderPane  {
         this.optionbutton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                DDventureView.getInstance().createAnOpenOptionScene();
+                DDventureView.getInstance().createAnOpenOptionScene(DDventureView.getInstance().getPrimaryStage());
             }
         });
     }

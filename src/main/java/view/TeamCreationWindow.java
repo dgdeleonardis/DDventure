@@ -14,7 +14,7 @@ public class TeamCreationWindow extends AnchorPane {
     // resources file name
     private static final String BACKGROUND_IMAGE_FILE_NAME = "image/background-hell_gate.png";
     private static final String MAIN_PANE_BACKGROUND_IMAGE_FILE_NAME = "image/background-lether.jpg";
-    private static final String FONT_FILE_NAME = "fonts/alagard.tff";
+    private static final String FONT_FILE_NAME = "fonts/alagard.ttf";
 
     // general attributes
     private static final int TITLE_FONT_SIZE = 64;
@@ -97,15 +97,6 @@ public class TeamCreationWindow extends AnchorPane {
         this.choiceNumberOfTeamBox = new ChoiceBox();
         this.choiceNumberOfTeamBox.getItems().addAll(ITEM_NUMBER_OF_TEAM_BOX);
 
-        this.choiceNumberOfTeamBox.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    teamCreationBox.getChildren().clear();
-                    int n = Integer.parseInt(newValue.toString());
-                    for (int i = 0; i < n; i++) {
-                        teamCreationBox.getChildren().add(new TeamCreationItem());
-                    }
-                });
-
         this.leftBox = new HBox(this.numberOfTeamLabel, this.choiceNumberOfTeamBox);
         this.leftBox.setAlignment(Pos.CENTER);
         this.leftBox.setSpacing(30);
@@ -131,6 +122,10 @@ public class TeamCreationWindow extends AnchorPane {
 
         this.confirmButton = new Button("Avanti");
         this.confirmButton.setFont(buttomFont);
+        this.confirmButton.setDisable(true);
+        this.confirmButton.setOnAction( event -> {
+            DDventureView.getInstance().createAnOpenPlayerScene();
+        });
 
         this.bottomPane.getChildren().addAll(this.backToMenuButton, this.confirmButton);
         AnchorPane.setLeftAnchor(this.backToMenuButton, 10.0);
@@ -139,5 +134,16 @@ public class TeamCreationWindow extends AnchorPane {
         AnchorPane.setBottomAnchor(this.confirmButton, 10.0);
 
         this.mainPane.setBottom(this.bottomPane);
+
+        this.choiceNumberOfTeamBox.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    teamCreationBox.getChildren().clear();
+                    int n = Integer.parseInt(newValue.toString());
+                    for (int i = 0; i < n; i++) {
+                        teamCreationBox.getChildren().add(new TeamCreationItem());
+                    }
+                    if(this.confirmButton != null)
+                        this.confirmButton.setDisable(false);
+                });
     }
 }

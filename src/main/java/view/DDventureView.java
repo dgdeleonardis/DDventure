@@ -2,6 +2,7 @@ package view;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class DDventureView implements IView{
 
@@ -20,6 +21,7 @@ public class DDventureView implements IView{
     private Scene initiativeScene;
     private Scene pauseScene;
     private Scene victoryScene;
+    private Scene guideScene;
 
     private DDventureView() {
     }
@@ -47,7 +49,7 @@ public class DDventureView implements IView{
 
     @Override
     public Stage getSecondaryStage() {
-        return null;
+        return this.secondaryStage;
     }
 
     @Override
@@ -66,14 +68,30 @@ public class DDventureView implements IView{
     }
 
     @Override
-    public void createAnOpenOptionScene() {
-        this.optionScene = new Scene(new OptionMenu(), 1280, 720);
-        this.primaryStage.setScene(this.optionScene);
+    public void createAnOpenOptionScene(Stage currentStage) {
+        if(currentStage.equals(this.primaryStage)) {
+            this.optionScene = new Scene(new OptionMenu(this.primaryStage), 1280, 720);
+            this.primaryStage.setScene(this.optionScene);
+        } else if (currentStage.equals(this.secondaryStage)) {
+            this.optionScene = new Scene(new OptionMenu(this.secondaryStage), 800, 600);
+            this.secondaryStage.setScene(this.optionScene);
+            this.secondaryStage.setX(this.primaryStage.getX() + this.primaryStage.getWidth() / 2 - this.secondaryStage.getWidth() / 2);
+            this.secondaryStage.setY(this.primaryStage.getY() + this.primaryStage.getHeight() / 2 - this.secondaryStage.getHeight() / 2);
+        }
+
     }
 
     @Override
-    public void createAnOpenGuideScene() {
-
+    public void createAnOpenGuideScene(Stage currentStage) {
+        if(currentStage.equals(this.primaryStage)) {
+            this.guideScene = new Scene(new GuideScene(this.primaryStage), 1280, 720);
+            this.primaryStage.setScene(this.guideScene);
+        } else if(currentStage.equals(this.secondaryStage)) {
+            this.guideScene = new Scene(new GuideScene(this.secondaryStage), 1280, 720);
+            this.secondaryStage.setScene(this.guideScene);
+            this.secondaryStage.setX(this.primaryStage.getX() + this.primaryStage.getWidth() / 2 - this.secondaryStage.getWidth() / 2);
+            this.secondaryStage.setY(this.primaryStage.getY() + this.primaryStage.getHeight() / 2 - this.secondaryStage.getHeight() / 2);
+        }
     }
 
     @Override
@@ -84,7 +102,8 @@ public class DDventureView implements IView{
 
     @Override
     public void createAnOpenPlayerScene() {
-
+        this.playerScene = new Scene(new PlayerScene(), 1280, 720);
+        this.primaryStage.setScene(this.playerScene);
     }
 
     @Override
@@ -99,7 +118,6 @@ public class DDventureView implements IView{
 
     @Override
     public void createAnOpenGameScene() {
-
     }
 
     @Override
@@ -114,6 +132,18 @@ public class DDventureView implements IView{
 
     @Override
     public void createAnOpenPauseStage() {
-
+        if(this.secondaryStage == null) {
+            this.secondaryStage = new Stage();
+            this.pauseScene = new Scene(new PauseBox());
+            this.secondaryStage.setScene(this.pauseScene);
+            this.secondaryStage.setAlwaysOnTop(true);
+            this.secondaryStage.initStyle(StageStyle.UNDECORATED);
+            this.primaryStage.getScene().getRoot().setDisable(true);
+            this.secondaryStage.show();
+        } else {
+            this.secondaryStage.setScene(new Scene(new PauseBox()));
+        }
+        this.secondaryStage.setX(this.primaryStage.getX() + this.primaryStage.getWidth() / 2 - this.secondaryStage.getWidth() / 2);
+        this.secondaryStage.setY(this.primaryStage.getY() + this.primaryStage.getHeight() / 2 - this.secondaryStage.getHeight() / 2);
     }
 }

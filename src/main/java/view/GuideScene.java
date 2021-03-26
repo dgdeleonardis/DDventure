@@ -18,11 +18,12 @@ public class GuideScene extends BorderPane {
     private Label title;
     private Text guide;
     private Button gobackbotton;
+    private final Stage currentStage;
 
-    public GuideScene() {
+    public GuideScene(Stage currentStage) {
         super();
-
-        BackgroundImage backgroundImage = new BackgroundImage(new Image("file:resources/image/background-hell_gate.png"),
+        this.currentStage = currentStage;
+        BackgroundImage backgroundImage = new BackgroundImage(new Image(getClass().getResourceAsStream("image/background-hell_gate.png")),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
@@ -31,8 +32,8 @@ public class GuideScene extends BorderPane {
 
         //top section
 
-        Font titleFont = Font.loadFont("file:resources/fonts/alagard.ttf", 34);
-        Font textFont = Font.loadFont("file:resources/fonts/alagard.ttf", 24);
+        Font titleFont = Font.loadFont(getClass().getResourceAsStream("fonts/alagard.ttf"), 34);
+        Font textFont = Font.loadFont(getClass().getResourceAsStream("fonts/alagard.ttf"), 24);
         this.title = new Label("Breve guida su come usare DDventure");
         this.title.setFont(titleFont);
         BorderPane.setMargin(this.title, new Insets(30,0,30,0));
@@ -59,7 +60,7 @@ public class GuideScene extends BorderPane {
         this.setCenter(this.guide);
 
         //bottom section
-        Font buttonFont = Font.loadFont("file:resources/fonts/alagard.ttf", 24);
+        Font buttonFont = Font.loadFont(getClass().getResourceAsStream("fonts/alagard.ttf"), 24);
         this.gobackbotton = new Button("Indietro");
         this.gobackbotton.setFont(buttonFont);
         BorderPane.setAlignment(this.gobackbotton, Pos.CENTER);
@@ -67,11 +68,8 @@ public class GuideScene extends BorderPane {
 
         this.setBottom(this.gobackbotton);
 
-        this.gobackbotton.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                DDventureView.getInstance().createAnOpenOptionScene();
-            }
+        this.gobackbotton.setOnAction( event ->  {
+                DDventureView.getInstance().createAnOpenOptionScene(this.currentStage);
         });
 
     }

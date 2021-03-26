@@ -16,10 +16,9 @@ public class TeamCreationItem extends HBox {
         this.teamNameText = new TextField("Schieramento N");
         this.teamColorPicker = new ColorPicker();
         this.getChildren().addAll(this.teamNameText, this.teamColorPicker);
-        Font textFont = Font.loadFont("file:resources/fonts/alagard.ttf", 24);
+        Font textFont = Font.loadFont(getClass().getResourceAsStream("fonts/alagard.ttf"), 24);
         this.teamNameText.setFont(textFont);
         this.setSpacing(30);
         this.setAlignment(Pos.CENTER);
-
     }
 }
