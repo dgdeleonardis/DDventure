@@ -1,13 +1,7 @@
 package view;
 
-import com.sun.javafx.scene.layout.region.BorderImageSlices;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderImage;
-import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
@@ -15,7 +9,7 @@ public class PauseBox extends VBox {
 
     private final static String FONT_FILE_NAME = "fonts/alagard.ttf";
     private final static int BUTTON_FONT_SIZE = 20;
-    private final static double PREFERRED_WIDTH = 280.0;
+    public final static double PREFERRED_WIDTH = 280.0;
 
     private final Button resumeGameButton;
     private final Button saveGameButton;

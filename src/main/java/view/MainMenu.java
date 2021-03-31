@@ -1,15 +1,14 @@
 package view;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class MainMenu extends BorderPane  {
     //top
@@ -21,18 +20,13 @@ public class MainMenu extends BorderPane  {
     //bottom
     protected Button optionbutton;
 
-    public MainMenu(){
+    public MainMenu() {
         super();
+        setPrefSize(DDventureView.PRIMARY_STAGE_WIDTH, DDventureView.PRIMARY_STAGE_HEIGHT);
 
-        BackgroundImage backgroundImage = new BackgroundImage(new Image(getClass().getResourceAsStream("image/background-hell_gate.png")),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(1.0, 1.0, true, true, false, false));
-        this.setBackground(new Background(backgroundImage));
         //top section
         this.title = new Label("DDventures");
-        Font titleFont = Font.loadFont(getClass().getResourceAsStream("fonts/alagard.ttf"), 74);
+        Font titleFont = Font.loadFont(getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), 74);
         this.title.setFont(titleFont);
         this.title.setTextFill(Color.WHITE);
         this.setTop(this.title);
@@ -43,7 +37,8 @@ public class MainMenu extends BorderPane  {
         //center section
         this.centerBox = new VBox();
         this.centerBox.setSpacing(30);
-        Font buttonFont = Font.loadFont(getClass().getResourceAsStream("fonts/alagard.ttf"), 24);
+
+        Font buttonFont = Font.loadFont(getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), 24);
         this.loadGame = new Button("Carica partita");
         this.loadGame.setFont(buttonFont);
         this.startGame = new Button("Nuova partita");
@@ -66,14 +61,8 @@ public class MainMenu extends BorderPane  {
 
         this.setBottom(this.optionbutton);
 
-        this.optionbutton.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                DDventureView.getInstance().createAnOpenOptionScene(DDventureView.getInstance().getPrimaryStage());
-            }
+        this.optionbutton.setOnAction( event ->  {
+                DDventureView.getInstance().createAnOpenOptionScene((Stage) getScene().getWindow());
         });
     }
-
-
-
 }

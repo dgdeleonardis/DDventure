@@ -26,7 +26,7 @@ public class ItemAvatarComboBox extends HBox {
     public ItemAvatarComboBox(String spriteName, String spriteImageFileName) {
         spriteNameLabel = new Label(spriteName);
         spriteNameLabel.setFont(Font.loadFont(
-                getClass().getResourceAsStream(PlayerScene.FONT_FILE_NAME), 16)
+                getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), 16)
         );
 
         ImageView spriteThumbnail = new ImageView(

@@ -5,7 +5,6 @@ import javafx.geometry.Pos;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -13,8 +12,6 @@ import javafx.stage.Stage;
 
 public class OptionMenu extends BorderPane {
     // main pane attributes
-    private static final String BACKGROUND_IMAGE_FILE_NAME = "image/background-hell_gate.png";
-    private static final String FONT_FILE_NAME = "fonts/alagard.ttf";
     private static final int TITLE_FONT_SIZE = 64;
     private static final int BUTTON_FONT_SIZE = 24;
     private final Stage currentStage;
@@ -35,26 +32,16 @@ public class OptionMenu extends BorderPane {
     public OptionMenu(Stage currentStage) {
         super();
         this.currentStage = currentStage;
-        // set background
-        BackgroundImage backgroundImage = new BackgroundImage(
-                new Image(this.getClass().getResourceAsStream(BACKGROUND_IMAGE_FILE_NAME)),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(
-                        1.0,
-                        1.0,
-                        true,
-                        true,
-                        false,
-                        false)
-        );
-        this.setBackground(new Background(backgroundImage));
+        if(currentStage.equals(DDventureView.getInstance().getPrimaryStage())) {
+            setPrefSize(DDventureView.PRIMARY_STAGE_WIDTH, DDventureView.PRIMARY_STAGE_HEIGHT);
+        } else {
+            setPrefSize(800, 600);
+        }
 
         // set top section
         this.titleLabel = new Label("Opzioni");
 
-        this.titleLabel.setFont(Font.loadFont(this.getClass().getResourceAsStream(FONT_FILE_NAME), TITLE_FONT_SIZE));
+        this.titleLabel.setFont(Font.loadFont(this.getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), TITLE_FONT_SIZE));
 
         this.titleLabel.setTextFill(Color.WHITE);
 
@@ -68,7 +55,7 @@ public class OptionMenu extends BorderPane {
         this.centerBox.setSpacing(30);
         this.centerBox.setAlignment(Pos.CENTER);
 
-        Font buttonFont = Font.loadFont(getClass().getResourceAsStream(FONT_FILE_NAME), BUTTON_FONT_SIZE);
+        Font buttonFont = Font.loadFont(getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), BUTTON_FONT_SIZE);
 
         this.musicButton = new Button("Musica: " + (DDventureView.getInstance().getMusicManager().isPlaying() ? "On" : "Off"));
         this.musicButton.setFont(buttonFont);
@@ -102,7 +89,7 @@ public class OptionMenu extends BorderPane {
             if(this.currentStage.equals(DDventureView.getInstance().getPrimaryStage()))
                 DDventureView.getInstance().createAnOpenMainMenuScene();
             else if(this.currentStage.equals(DDventureView.getInstance().getSecondaryStage()))
-                DDventureView.getInstance().createAnOpenPauseStage();
+                DDventureView.getInstance().createAnOpenPauseMenu();
         });
 
         this.bottomPane.getChildren().addAll(this.guideButton, this.backToMainMenuButton);

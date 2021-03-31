@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import view.DDventureView;
 
+
 public class Main extends Application {
 
     @Override
@@ -11,16 +12,16 @@ public class Main extends Application {
 
         DDventureView.getInstance().setPrimaryStage(primaryStage);
         DDventureView.getInstance().getPrimaryStage().setTitle("DDventure");
-        DDventureView.getInstance().getMusicManager().playMusic();
-        // test section
+        //DDventureView.getInstance().getMusicManager().playMusic();
         DDventureView.getInstance().createAnOpenMainMenuScene();
-        // end test section
-        DDventureView.getInstance().getPrimaryStage().setResizable(true);
-        DDventureView.getInstance().getPrimaryStage().show();
 
-        // test section part 2
-            DDventureView.getInstance().createAnOpenPauseStage();
+        // test section
+        //DDventureView.getInstance().createAnOpenPauseMenu();
+        //DDventureView.getInstance().createAnOpenMapScene();
+        //DDventureView.getInstance().createAnOpenPauseStage();
         // end test section
+
+        DDventureView.getInstance().getPrimaryStage().show();
     }
 
 

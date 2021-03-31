@@ -16,12 +16,8 @@ import javafx.util.Callback;
 
 import java.util.HashMap;
 
-public class PlayerScene extends AnchorPane {
+public class PlayerScene extends BorderPane {
 
-    // new code section
-    private static final String BACKGROUND_IMAGE_FILE_NAME = "image/background-hell_gate.png";
-    private static final String LEATHER_BACKGROUND_IMAGE_FILE_NAME = "image/background-lether.jpg";
-    public static final String FONT_FILE_NAME = "fonts/alagard.ttf";
     public static final String AVATAR_DIRECTORY_RELATIVE_PATH = "image/avatar/";
 
     private static final HashMap<String, String> SPRITE_MAP = new HashMap<String, String>() {{
@@ -47,8 +43,6 @@ public class PlayerScene extends AnchorPane {
         put("Barbaro", "Tribe leader sheet.png");
     }};
     // end section
-
-    private BorderPane mainPane;
 
     //top section
     protected Label title;
@@ -94,39 +88,17 @@ public class PlayerScene extends AnchorPane {
 
     public PlayerScene(){
         super();
-        BackgroundImage backgroundImage = new BackgroundImage(new Image(this.getClass().getResourceAsStream(BACKGROUND_IMAGE_FILE_NAME)),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(1.0, 1.0, true, true, false, false));
-        this.setBackground(new Background(backgroundImage));
+        setPrefSize(
+                DDventureView.PRIMARY_STAGE_WIDTH - (30*2),
+                DDventureView.PRIMARY_STAGE_HEIGHT - (30*2));
+        setPadding(new Insets(10, 10, 10, 10));
 
-        this.mainPane = new BorderPane();
-        Image imgMainPane = new Image(this.getClass().getResourceAsStream(LEATHER_BACKGROUND_IMAGE_FILE_NAME));
-        BackgroundImage letherBackground = new BackgroundImage(imgMainPane,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(1.0,
-                        1.0,
-                        true,
-                        true,
-                        false,
-                        false));
-        this.mainPane.setBackground(new Background(letherBackground));
-        this.getChildren().add(this.mainPane);
-        AnchorPane.setTopAnchor(this.mainPane, 30.0);
-        AnchorPane.setLeftAnchor(this.mainPane, 30.0);
-        AnchorPane.setRightAnchor(this.mainPane, 30.0);
-        AnchorPane.setBottomAnchor(this.mainPane, 30.0);
-        this.mainPane.setPadding(new Insets(10, 10, 10, 10));
-
-        Font textFont = Font.loadFont(this.getClass().getResourceAsStream(FONT_FILE_NAME), 24);
+        Font textFont = Font.loadFont(this.getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), 24);
 
         //top section
         this.title = new Label("Costruzione del personaggio");
-        this.title.setFont(Font.loadFont(this.getClass().getResourceAsStream(FONT_FILE_NAME), 34));
-        this.mainPane.setTop(this.title);
+        this.title.setFont(Font.loadFont(this.getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), 34));
+        setTop(this.title);
         BorderPane.setMargin(this.title, new Insets(30, 0, 30, 0));
         BorderPane.setAlignment(this.title, Pos.CENTER);
 
@@ -168,7 +140,7 @@ public class PlayerScene extends AnchorPane {
         initiative.setSpacing(20);
 
         this.lsection = new VBox(name, pf, ca, speed, initiative, team);
-        this.mainPane.setLeft(this.lsection);
+        setLeft(this.lsection);
         BorderPane.setAlignment(this.lsection, Pos.CENTER);
         BorderPane.setMargin(this.lsection, new Insets(50, 0, 0, 80));
         this.lsection.setSpacing(30);
@@ -237,7 +209,7 @@ public class PlayerScene extends AnchorPane {
         this.spriteView.setEffect(new DropShadow(30, Color.web("99CC99")));
         this.rsection.setSpacing(30);
         this.rsection.setAlignment(Pos.CENTER);
-        this.mainPane.setRight(this.rsection);
+        setRight(this.rsection);
         BorderPane.setAlignment(this.rsection, Pos.CENTER);
         BorderPane.setMargin(this.rsection, new Insets(50, 60, 0, 0));
         this.rsection.setSpacing(30);
@@ -255,6 +227,9 @@ public class PlayerScene extends AnchorPane {
         HBox nextHBox = new HBox(this.nextPlayer, this.confirmButton);
         nextHBox.setSpacing(100);
         this.confirmButton.setFont(textFont);
+        confirmButton.setOnAction( event -> {
+            DDventureView.getInstance().createAnOpenMapScene();
+        });
         this.backButton.setFont(textFont);
         this.nextPlayer.setFont(textFont);
 
@@ -263,6 +238,6 @@ public class PlayerScene extends AnchorPane {
         AnchorPane.setBottomAnchor(this.backButton, 10.0);
         AnchorPane.setRightAnchor(nextHBox, 10.0);
         AnchorPane.setBottomAnchor(nextHBox, 10.0);
-        this.mainPane.setBottom(this.bottomPane);
+        setBottom(this.bottomPane);
     }
 }
