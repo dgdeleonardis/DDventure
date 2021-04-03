@@ -224,6 +224,13 @@ public class PlayerScene extends BorderPane {
         });
         this.confirmButton = new Button("Avanti");
         this.nextPlayer = new Button("Prossimo Giocatore");
+        this.nextPlayer.setOnAction(event -> {
+            /* TODO MODEL: funzione creaPersonaggio(elenco delle caratteristiche + arma + nome della categoria dello sprite + schieramento)
+                VIEW funzione che esegue una "pulizia" della schermata sulle caselle di testo
+             */
+        });
+
+        // TODO: aggiungere tasto salva personaggio e gestirlo come per il caso della Mappa
         HBox nextHBox = new HBox(this.nextPlayer, this.confirmButton);
         nextHBox.setSpacing(100);
         this.confirmButton.setFont(textFont);

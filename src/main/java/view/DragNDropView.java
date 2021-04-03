@@ -2,7 +2,6 @@ package view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -16,10 +15,11 @@ public class DragNDropView extends BorderPane {
     private static final int BUTTON_FONT_SIZE = 24;
     private static final double MAP_WIDHT = 720;
     private static final double MAP_HEIGHT = 450;
-
+    /*
+    drag & drop version
     private double sourceX;
     private double sourceY;
-
+    */
     public DragNDropView() {
         // global settings
         setPrefSize(
@@ -38,7 +38,8 @@ public class DragNDropView extends BorderPane {
         MapView map = new MapView(MAP_WIDHT, MAP_HEIGHT);
         setCenter(map);
         BorderPane.setAlignment(map, Pos.CENTER);
-
+        /*
+        drag & drop version
         map.setOnMousePressed(event -> {
             //System.out.println("Pressed");
             sourceX = event.getX();
@@ -51,7 +52,13 @@ public class DragNDropView extends BorderPane {
             movePlayer(sourceX, sourceY, targetX, targetY);
             map.setCursor(Cursor.DEFAULT);
         });
+        */
+        // selected version
+        map.setOnMouseClicked(event -> {
+            //System.out.println("Click");
+            // TODO [MODEL]: if(c'è un personaggio?(cella x e y)) { istruzioni per la selezione }
 
+        });
 
         // bottom section
         Font buttonFont = Font.font("Alagard", BUTTON_FONT_SIZE);
@@ -74,9 +81,9 @@ public class DragNDropView extends BorderPane {
     }
 
     private void movePlayer(double sourceX, double sourceY, double targetX, double targetY) {
-        /* TODO:
-            #1 passo: movePlayerModel(sourceX/cellWidth, sourceY/cellHeight, ... con target)
-            #2 passo: ridisegnare la mappa
+        /* TODO MODEL:
+            #1 passo: setPlayerCoordinatesModel(sourceX/cellWidth, sourceY/cellHeight, ... con target) MODEL
+            #2 passo: ridisegnare la mappa VIEW
         */
     }
 }

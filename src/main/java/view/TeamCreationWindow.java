@@ -1,14 +1,17 @@
 package view;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
-import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import logic.DDventureLogic;
 
 public class TeamCreationWindow extends BorderPane {
 
@@ -21,7 +24,8 @@ public class TeamCreationWindow extends BorderPane {
     private final Label titleLabel;
 
     // left section attributes
-    private final HBox leftBox;
+    private final VBox leftBox;
+    private final HBox teamHBox;
 
     private final Label numberOfTeamLabel;
     private final ChoiceBox choiceNumberOfTeamBox;
@@ -58,11 +62,15 @@ public class TeamCreationWindow extends BorderPane {
         this.choiceNumberOfTeamBox = new ChoiceBox();
         this.choiceNumberOfTeamBox.getItems().addAll(ITEM_NUMBER_OF_TEAM_BOX);
 
-        this.leftBox = new HBox(this.numberOfTeamLabel, this.choiceNumberOfTeamBox);
-        this.leftBox.setAlignment(Pos.CENTER);
-        this.leftBox.setSpacing(30);
+        this.leftBox = new VBox();
+        this.leftBox.setSpacing(100);
 
-        setLeft(this.leftBox);
+        this.leftBox.setAlignment(Pos.CENTER);
+        this.teamHBox = new HBox(this.numberOfTeamLabel, this.choiceNumberOfTeamBox);
+        this.teamHBox.setAlignment(Pos.CENTER);
+        this.teamHBox.setSpacing(30);
+        this.leftBox.getChildren().add(teamHBox);
+        setLeft(leftBox);
         BorderPane.setAlignment(this.leftBox, Pos.TOP_CENTER);
         BorderPane.setMargin(this.leftBox, new Insets(30));
 
@@ -85,7 +93,27 @@ public class TeamCreationWindow extends BorderPane {
         this.confirmButton.setFont(buttomFont);
         this.confirmButton.setDisable(true);
         this.confirmButton.setOnAction( event -> {
-            DDventureView.getInstance().createAnOpenPlayerScene();
+            ObservableList<Node> teamCreationItems = teamCreationBox.getChildren();
+            boolean flag = true;
+            for(int i = 0; i < teamCreationItems.size() && flag; i++) {
+                TeamCreationItem item = (TeamCreationItem) teamCreationItems.get(i);
+                flag = DDventureLogic.getInstance().createTeam(item.getTeamName(), item.getTeamColor());
+            }
+            if(flag) {
+                DDventureView.getInstance().createAnOpenPlayerScene();
+            } else {
+                Label errorLabel = new Label("Errore: due o piu' team presentano\nlo stesso nome o colore");
+                errorLabel.setFont(buttomFont);
+                errorLabel.setTextFill(Color.RED);
+                leftBox.getChildren().add(errorLabel);
+            }
+
+                // TODO: mostra errore nella View
+
+            /* TODO MODEL: deve prendere le informazioni relative ai TeamCreationItem (nome del team e colore) e salvarli
+                l'elenco degli schieramenti deve essere allocato nell'oggetto Game
+                metodo creaSchieramenti([Stringa del nome, stringa del colore])
+            */
         });
 
         this.bottomPane.getChildren().addAll(this.backToMenuButton, this.confirmButton);

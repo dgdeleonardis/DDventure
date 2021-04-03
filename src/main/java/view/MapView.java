@@ -7,12 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
-import logic.Cella;
-import logic.PersonaggioInPartita;
+import logic.Cell;
+import logic.CharacterInGame;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,10 +17,10 @@ public class MapView extends Canvas {
 
     private static final String TEXTURE_MAP_FILE_NAME = "image/texture-map.png";
 
-    private Cella[][] map;
+    private Cell[][] map;
     public int columns;
     public int rows;
-    public ArrayList<PersonaggioInPartita> personaggioInPartita;
+    public ArrayList<CharacterInGame> characterInGame;
 
     private static final HashMap<Integer, Rectangle2D> LAND_TEXTURE_MASK_MAP = new HashMap<Integer, Rectangle2D>() {{
         put(1, new Rectangle2D(16, 0, 16, 16));
@@ -39,17 +35,17 @@ public class MapView extends Canvas {
         // genero una mappa casuale
         int columns = (int) Math.round(16*moltiplicatoreGrandezza);
         int rows = (int) Math.round(9*moltiplicatoreGrandezza);
-        Cella[][] modelMap = new Cella[columns][rows];
+        Cell[][] modelMap = new Cell[columns][rows];
         for(int i = 0; i < 16*moltiplicatoreGrandezza; i++) {
             for (int j = 0; j < 9*moltiplicatoreGrandezza; j++) {
-                modelMap[i][j] = new Cella((int) Math.ceil(Math.random() * 3.0));
+                modelMap[i][j] = new Cell((int) Math.ceil(Math.random() * 3.0));
             }
         }
         map = modelMap;
         draw();
     }
 
-    public MapView(double width, double height, Cella[][] map) {
+    public MapView(double width, double height, Cell[][] map) {
         super(width, height);
         this.map = map;
         draw();
@@ -69,34 +65,35 @@ public class MapView extends Canvas {
             for(int j = 0; j < rows; j++) {
                 gc.strokeRect(getWidth()/columns*i, getHeight()/rows*j, getWidth()/columns, getHeight()/rows);
                 gc.drawImage(textureMapImage,
-                        LAND_TEXTURE_MASK_MAP.get(map[i][j].getCostoAttraversamento()).getMinX(),
-                        LAND_TEXTURE_MASK_MAP.get(map[i][j].getCostoAttraversamento()).getMinY(),
-                        LAND_TEXTURE_MASK_MAP.get(map[i][j].getCostoAttraversamento()).getWidth(),
-                        LAND_TEXTURE_MASK_MAP.get(map[i][j].getCostoAttraversamento()).getHeight(),
+                        LAND_TEXTURE_MASK_MAP.get(map[i][j].getCrossingCost()).getMinX(),
+                        LAND_TEXTURE_MASK_MAP.get(map[i][j].getCrossingCost()).getMinY(),
+                        LAND_TEXTURE_MASK_MAP.get(map[i][j].getCrossingCost()).getWidth(),
+                        LAND_TEXTURE_MASK_MAP.get(map[i][j].getCrossingCost()).getHeight(),
                         getWidth()/columns*i, getHeight()/rows*j, getWidth()/columns, getHeight()/rows);
             }
         }
         drawPersonaggi(gc);
     }
 
-    public void setMap(Cella[][] map) {
+    public void setMap(Cell[][] map) {
         this.map = map;
     }
 
     public void drawPersonaggi(GraphicsContext gc) {
-        Image annaSprite = makeTransparent(new Image(getClass().getResourceAsStream("image/anna_sheet.png")));
+        // TODO MODEL: getPersonaggiECoordinate()
+        /*Image annaSprite = makeTransparent(new Image(getClass().getResourceAsStream("image/anna_sheet.png")));
         // roba in più da eliminare più in là
-        personaggioInPartita = new ArrayList<PersonaggioInPartita>(){{
-           add(new PersonaggioInPartita(4, 6));
-            add(new PersonaggioInPartita(4, 7));
-            add(new PersonaggioInPartita(4, 4));
-            add(new PersonaggioInPartita(7, 10));
-            add(new PersonaggioInPartita(9, 11));
+        characterInGame = new ArrayList<CharacterInGame>(){{
+           add(new CharacterInGame(4, 6));
+            add(new CharacterInGame(4, 7));
+            add(new CharacterInGame(4, 4));
+            add(new CharacterInGame(7, 10));
+            add(new CharacterInGame(9, 11));
         }};
-        personaggioInPartita.forEach( p -> {
+        characterInGame.forEach(p -> {
             gc.drawImage(annaSprite, getWidth()/columns*p.getCoordinataX(), getHeight()/rows* p.getCoordinataY(),
                     getWidth()/columns, getHeight()/rows);
-        });
+        });*/
 
     }
 

@@ -49,6 +49,14 @@ public class MainMenu extends BorderPane  {
         BorderPane.setAlignment(this.centerBox, Pos.CENTER);
         this.startGame.setMinWidth(320);
         this.loadGame.setMinWidth(320);
+        this.loadGame.setOnAction(event -> {
+            /* TODO: VIEW -apri scena esplora risorse
+                    scelto il file dobbiamo caricarlo con il metodo del MODEL caricaPartita(String FILE_NAME_PARTITA)
+                    deve generare un oggetto Game (compreso di personaggi, mappa, disposizione dei giocatori, turno, ordine
+                    dei giocatori in gara)
+                    VIEW - crei una GameScene
+            */
+        });
         this.startGame.setOnAction(event -> {
             view.DDventureView.getInstance().createAnOpenTeamScene();
         });

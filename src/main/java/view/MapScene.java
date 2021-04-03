@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
-import logic.Cella;
+import logic.Cell;
 
 import java.util.HashMap;
 
@@ -70,6 +70,9 @@ public class MapScene extends BorderPane {
         this.saveMap = new Button("Salva mappa");
         this.saveMap.setFont(Font.loadFont(this.getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), BUTTON_FONT_SIZE));
         this.saveMap.setMinWidth(250);
+        this.saveMap.setOnAction(event -> {
+            // TODO MODEL: salvaMappa se il canvas non è vuoto (VIEW) in una cartella prefissata creata con l'istanziamento del Model
+        });
 
         VBox leftside = new VBox(dimensionOfTheMap, this.createMap, this.saveMap);
         leftside.setSpacing(10);
@@ -78,6 +81,9 @@ public class MapScene extends BorderPane {
         this.loadMap = new Button("Carica mappa");
         this.loadMap.setFont(Font.loadFont(this.getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), BUTTON_FONT_SIZE));
         this.loadMap.setMinWidth(250);
+        this.loadMap.setOnAction(event -> {
+            // TODO model: stesso discorso della partita.
+        });
 
         //right
         this.startGame = new Button("Avanti");
@@ -85,6 +91,11 @@ public class MapScene extends BorderPane {
         this.startGame.setMinWidth(250);
         startGame.setOnAction( event -> {
             DDventureView.getInstance().createAnOpenDragNDropScene();
+            /*
+                TODO MODEL: nel caso in cui la mappa creata è salvata temporaneamente nella MapView, viene impostata come
+                mappa del Game nel momento in cui si clicca su Start game.
+
+             */
         });
 
         HBox topSection = new HBox(leftside, this.loadMap, this.startGame);
@@ -99,15 +110,20 @@ public class MapScene extends BorderPane {
         this.map = new MapView(720, 405);
 
         createMap.setOnAction(event -> {
+            /*
+                TODO MODEL: metodo creaMappa(int moltiplicatoreGrandezza) restituisce una mappa
+                 -> VIEW: mostrare la mappa, disegnarla attraverso un get del model .... draw(mappaDaDisegnare).
+                 la mappa o la salviamo come attributo di MapView oppure alla creazione viene definita come mappa del game nel model.
+             */
             double moltiplicatoreGrandezza = ITEM_DIMENSION_OF_THE_MAP_BOX.get(dimensionOfTheMapBox.getSelectionModel().getSelectedItem().toString());
             // roba da eliminare in seguito
             // genero una mappa casuale
             int columns = (int) Math.round(16*moltiplicatoreGrandezza);
             int rows = (int) Math.round(9*moltiplicatoreGrandezza);
-            Cella[][] modelMap = new Cella[columns][rows];
+            Cell[][] modelMap = new Cell[columns][rows];
             for(int i = 0; i < 16*moltiplicatoreGrandezza; i++) {
                 for (int j = 0; j < 9*moltiplicatoreGrandezza; j++) {
-                    modelMap[i][j] = new Cella((int) Math.ceil(Math.random() * 3.0));
+                    modelMap[i][j] = new Cell((int) Math.ceil(Math.random() * 3.0));
                 }
             }
             map.setMap(modelMap);

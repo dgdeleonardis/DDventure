@@ -98,10 +98,10 @@ public class DDventureView implements IView{
         backgroundPane.getChildren().clear();
         MainMenu mainMenu = new MainMenu();
         backgroundPane.getChildren().add(mainMenu);
-        centerPanel(backgroundPane, mainMenu, 0);
+        centerPanel(mainMenu, 0);
     }
 
-    private void centerPanel(AnchorPane parentPane, Pane childPane, double value) {
+    private void centerPanel(Pane childPane, double value) {
         AnchorPane.setTopAnchor(childPane, value);
         AnchorPane.setBottomAnchor(childPane, value);
         AnchorPane.setLeftAnchor(childPane, value);
@@ -128,7 +128,7 @@ public class DDventureView implements IView{
         backgroundPane.getChildren().clear();
         OptionMenu optionMenu = new OptionMenu(currentStage);
         backgroundPane.getChildren().add(optionMenu);
-        centerPanel(backgroundPane, optionMenu,0);
+        centerPanel(optionMenu,0);
     }
 
     @Override
@@ -155,11 +155,11 @@ public class DDventureView implements IView{
             }
             backgroundPane.getChildren().clear();
             backgroundPane.getChildren().add(creationGamePane);
-            centerPanel(backgroundPane, creationGamePane, 30);
+            centerPanel(creationGamePane, 30);
             creationGamePane.getChildren().clear();
             TeamCreationWindow teamCreationWindow = new TeamCreationWindow();
             creationGamePane.getChildren().add(teamCreationWindow);
-            centerPanel(creationGamePane, teamCreationWindow, 0);
+            centerPanel(teamCreationWindow, 0);
         }
     }
 
@@ -169,7 +169,7 @@ public class DDventureView implements IView{
             creationGamePane.getChildren().clear();
             PlayerScene playerScene = new PlayerScene();
             creationGamePane.getChildren().add(playerScene);
-            centerPanel(creationGamePane, playerScene, 0);
+            centerPanel(playerScene, 0);
         }
     }
 
@@ -179,7 +179,7 @@ public class DDventureView implements IView{
             creationGamePane.getChildren().clear();
             MapScene mapScene = new MapScene();
             creationGamePane.getChildren().add(mapScene);
-            centerPanel(creationGamePane, mapScene, 0);
+            centerPanel(mapScene, 0);
         }
     }
 
@@ -189,7 +189,7 @@ public class DDventureView implements IView{
             creationGamePane.getChildren().clear();
             DragNDropView dragNDropView = new DragNDropView();
             creationGamePane.getChildren().add(dragNDropView);
-            centerPanel(creationGamePane, dragNDropView, 0);
+            centerPanel(dragNDropView, 0);
         }
     }
 
