@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
+import logic.DDventureLogic;
 
 
 public class DragNDropView extends BorderPane {
@@ -36,6 +37,7 @@ public class DragNDropView extends BorderPane {
 
         // center section
         MapView map = new MapView(MAP_WIDHT, MAP_HEIGHT);
+        map.drawMap(DDventureLogic.getInstance().getGameMap());
         setCenter(map);
         BorderPane.setAlignment(map, Pos.CENTER);
         /*
@@ -55,9 +57,17 @@ public class DragNDropView extends BorderPane {
         */
         // selected version
         map.setOnMouseClicked(event -> {
-            //System.out.println("Click");
             // TODO [MODEL]: if(c'è un personaggio?(cella x e y)) { istruzioni per la selezione }
-
+            // onClick: o il personaggio è nella cella o no;
+            // --- se sei in modalità spostamento o no
+            int i = (int) (event.getX() / (map.getWidth()/DDventureLogic.getInstance().getGameMap().getColumns()));
+            int j = (int) (event.getY() / (map.getHeight()/DDventureLogic.getInstance().getGameMap().getRows()));
+            //FIXME: vedi se spostare il isOccupied sul DDventureLogic
+            //if(DDventureLogic.getInstance().getGameMap().getCells()[i][j].isOccupied()) {
+            //}
+            // se in selectionMode: 1. selezione la casella e poi mi salvo le coordinate I e J.
+            map.drawBorderCell(i, j, DDventureLogic.getInstance().getGameMap());
+            //System.out.println("x:" + event.getX() + "; y:" + event.getY());
         });
 
         // bottom section

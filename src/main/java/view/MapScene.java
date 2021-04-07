@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import logic.Cell;
+import logic.DDventureLogic;
 
 import java.util.HashMap;
 
@@ -90,12 +91,9 @@ public class MapScene extends BorderPane {
         this.startGame.setFont(Font.loadFont(this.getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), BUTTON_FONT_SIZE));
         this.startGame.setMinWidth(250);
         startGame.setOnAction( event -> {
+            DDventureLogic.getInstance().setGameMap();
             DDventureView.getInstance().createAnOpenDragNDropScene();
-            /*
-                TODO MODEL: nel caso in cui la mappa creata è salvata temporaneamente nella MapView, viene impostata come
-                mappa del Game nel momento in cui si clicca su Start game.
 
-             */
         });
 
         HBox topSection = new HBox(leftside, this.loadMap, this.startGame);
@@ -110,24 +108,8 @@ public class MapScene extends BorderPane {
         this.map = new MapView(720, 405);
 
         createMap.setOnAction(event -> {
-            /*
-                TODO MODEL: metodo creaMappa(int moltiplicatoreGrandezza) restituisce una mappa
-                 -> VIEW: mostrare la mappa, disegnarla attraverso un get del model .... draw(mappaDaDisegnare).
-                 la mappa o la salviamo come attributo di MapView oppure alla creazione viene definita come mappa del game nel model.
-             */
-            double moltiplicatoreGrandezza = ITEM_DIMENSION_OF_THE_MAP_BOX.get(dimensionOfTheMapBox.getSelectionModel().getSelectedItem().toString());
-            // roba da eliminare in seguito
-            // genero una mappa casuale
-            int columns = (int) Math.round(16*moltiplicatoreGrandezza);
-            int rows = (int) Math.round(9*moltiplicatoreGrandezza);
-            Cell[][] modelMap = new Cell[columns][rows];
-            for(int i = 0; i < 16*moltiplicatoreGrandezza; i++) {
-                for (int j = 0; j < 9*moltiplicatoreGrandezza; j++) {
-                    modelMap[i][j] = new Cell((int) Math.ceil(Math.random() * 3.0));
-                }
-            }
-            map.setMap(modelMap);
-            map.draw();
+            DDventureLogic.getInstance().createMap(ITEM_DIMENSION_OF_THE_MAP_BOX.get(dimensionOfTheMapBox.getSelectionModel().getSelectedItem().toString()));
+            map.drawMap(DDventureLogic.getInstance().getTempMap());
 
         });
         setCenter(this.map);

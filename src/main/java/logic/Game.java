@@ -4,19 +4,20 @@ import java.util.ArrayList;
 
 public class Game {
 
-    private Cell[][] map;
+    private Map map;
     private ArrayList<CharacterInGame> charactersInGame;
     private ArrayList<Team> teams;
 
     public Game() {
-        teams = new ArrayList<Team>();
+        teams = new ArrayList<>();
+        charactersInGame = new ArrayList<>();
     }
 
-    public Cell[][] getMap() {
+    public Map getMap() {
         return map;
     }
 
-    public ArrayList<CharacterInGame> getPersonaggiInPartita() {
+    public ArrayList<CharacterInGame> getCharactersInGame() {
         return charactersInGame;
     }
 
@@ -24,7 +25,7 @@ public class Game {
         return teams;
     }
 
-    public void setMap(Cell[][] map) {
+    public void setMap(Map map) {
         this.map = map;
     }
 

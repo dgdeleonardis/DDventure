@@ -3,8 +3,12 @@ package view;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+import java.util.HashMap;
 
 public class DDventureView implements IView{
 
@@ -13,6 +17,15 @@ public class DDventureView implements IView{
     public static final String FONT_FILE_NAME = "font/alagard.ttf";
     public static final int PRIMARY_STAGE_WIDTH = 1280;
     public static final int PRIMARY_STAGE_HEIGHT = 720;
+
+    public static final HashMap<String, Color> TEAM_COLORS = new HashMap<String, Color>() {{
+        put("Rosso", Color.RED);
+        put("Blue", Color.BLUE);
+        put("Verde", Color.GREEN);
+        put("Rosa", Color.PINK);
+        put("Arancione", Color.ORANGE);
+        put("Oro", Color.GOLD);
+    }};
 
     private static DDventureView instance = null;
     private static MusicManager musicManager= null;
@@ -27,12 +40,12 @@ public class DDventureView implements IView{
     private Scene initiativeScene;
     private Scene pauseScene;
     private Scene victoryScene;
-    private Scene guideScene;
 
     private final BackgroundImage mainBackgroundImage;
     private final BackgroundImage creationGameBackgroundImage;
 
     private DDventureView() {
+        Font.loadFont(getClass().getResourceAsStream(FONT_FILE_NAME), 24);
         mainBackgroundImage = new BackgroundImage(new Image(getClass().getResourceAsStream(MAIN_BACKGROUND_FILE_NAME)),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
@@ -77,15 +90,7 @@ public class DDventureView implements IView{
     }
 
     @Override
-    public void getOpenMainScene() {
-    }
-
-    @Override
     public void createAnOpenMainMenuScene() {
-        /*
-        per marta: per risolvere il problema relativo al refresh dell'immagine di background ho pensato di creare un
-        panello di sfondo fisso e aggiungere di volta in volta i vari layout.
-        */
         AnchorPane backgroundPane;
         if(mainScene == null) {
             backgroundPane = new AnchorPane();
@@ -99,13 +104,6 @@ public class DDventureView implements IView{
         MainMenu mainMenu = new MainMenu();
         backgroundPane.getChildren().add(mainMenu);
         centerPanel(mainMenu, 0);
-    }
-
-    private void centerPanel(Pane childPane, double value) {
-        AnchorPane.setTopAnchor(childPane, value);
-        AnchorPane.setBottomAnchor(childPane, value);
-        AnchorPane.setLeftAnchor(childPane, value);
-        AnchorPane.setRightAnchor(childPane, value);
     }
 
     @Override
@@ -126,23 +124,33 @@ public class DDventureView implements IView{
             secondaryStage.setY(primaryStage.getY() + primaryStage.getHeight()/2 - secondaryStage.getHeight()/2);
         }
         backgroundPane.getChildren().clear();
-        OptionMenu optionMenu = new OptionMenu(currentStage);
-        backgroundPane.getChildren().add(optionMenu);
-        centerPanel(optionMenu,0);
+        OptionMenuView optionMenuView = new OptionMenuView(currentStage);
+        backgroundPane.getChildren().add(optionMenuView);
+        centerPanel(optionMenuView,0);
     }
 
     @Override
     public void createAnOpenGuideScene(Stage currentStage) {
-        if(currentStage.equals(this.primaryStage)) {
-            this.guideScene = new Scene(new GuideScene(this.primaryStage));
-            this.primaryStage.setScene(this.guideScene);
-        } else if(currentStage.equals(this.secondaryStage)) {
-            this.guideScene = new Scene(new GuideScene(this.secondaryStage), 1280, 720);
-            this.secondaryStage.setScene(this.guideScene);
-            secondaryStage.centerOnScreen();
-            this.secondaryStage.setX(this.primaryStage.getX() + this.primaryStage.getWidth() / 2 - this.secondaryStage.getWidth()/2);
-            this.secondaryStage.setY(this.primaryStage.getY() + this.primaryStage.getHeight() / 2 - this.secondaryStage.getHeight()/2);
+        AnchorPane backgroundPane;
+        if(currentStage.equals(primaryStage)) {
+            if(mainScene != null) {
+                backgroundPane = (AnchorPane) mainScene.getRoot();
+                backgroundPane.getChildren().clear();
+            } else {
+                backgroundPane = new AnchorPane();
+                backgroundPane.setBackground(new Background(mainBackgroundImage));
+            }
+        } else {
+            backgroundPane = new AnchorPane();
+            backgroundPane.setBackground(new Background(mainBackgroundImage));
+            secondaryStage.setScene(new Scene(backgroundPane, PRIMARY_STAGE_WIDTH, PRIMARY_STAGE_HEIGHT));
+            secondaryStage.setX(primaryStage.getX() + primaryStage.getWidth()/2 - secondaryStage.getWidth()/2);
+            secondaryStage.setY(primaryStage.getY() + primaryStage.getHeight()/2 - secondaryStage.getHeight()/2);
         }
+        GuideScene guideScene = new GuideScene(currentStage);
+        backgroundPane.getChildren().add(guideScene);
+        centerPanel(guideScene, 0);
+
     }
 
     @Override
@@ -157,9 +165,9 @@ public class DDventureView implements IView{
             backgroundPane.getChildren().add(creationGamePane);
             centerPanel(creationGamePane, 30);
             creationGamePane.getChildren().clear();
-            TeamCreationWindow teamCreationWindow = new TeamCreationWindow();
-            creationGamePane.getChildren().add(teamCreationWindow);
-            centerPanel(teamCreationWindow, 0);
+            TeamCreationMenuView teamCreationMenuView = new TeamCreationMenuView();
+            creationGamePane.getChildren().add(teamCreationMenuView);
+            centerPanel(teamCreationMenuView, 0);
         }
     }
 
@@ -222,5 +230,12 @@ public class DDventureView implements IView{
         }
         this.secondaryStage.setX(this.primaryStage.getX() + this.primaryStage.getWidth() / 2 - this.secondaryStage.getWidth() / 2);
         this.secondaryStage.setY(this.primaryStage.getY() + this.primaryStage.getHeight() / 2 - this.secondaryStage.getHeight() / 2);
+    }
+
+    private void centerPanel(Pane childPane, double value) {
+        AnchorPane.setTopAnchor(childPane, value);
+        AnchorPane.setBottomAnchor(childPane, value);
+        AnchorPane.setLeftAnchor(childPane, value);
+        AnchorPane.setRightAnchor(childPane, value);
     }
 }

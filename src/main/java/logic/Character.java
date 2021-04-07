@@ -6,17 +6,17 @@ public class Character {
     protected Integer ca;
     protected Integer speed;
     protected Integer initiative;
-    protected Team team;
     protected String avatar;
     protected Weapon weapon;
 
-    public Character(String name, int pf, int ca, int speed, int initiative, String avatar) {
+    public Character(String name, int pf, int ca, int speed, int initiative, String avatar, Weapon weapon) {
         this.name = name;
         this.pf = pf;
         this.ca = ca;
         this.speed = speed;
         this.initiative = initiative;
         this.avatar = avatar;
+        this.weapon = weapon;
     }
 
     public String getName(){

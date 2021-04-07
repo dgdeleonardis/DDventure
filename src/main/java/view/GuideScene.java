@@ -4,7 +4,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
@@ -19,17 +18,11 @@ public class GuideScene extends BorderPane {
     public GuideScene(Stage currentStage) {
         super();
         this.currentStage = currentStage;
-        BackgroundImage backgroundImage = new BackgroundImage(new Image(getClass().getResourceAsStream("image/background-hell_gate.png")),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(1.0, 1.0, true, true, false, false));
-        this.setBackground(new Background(backgroundImage));
+        setPrefSize(DDventureView.PRIMARY_STAGE_WIDTH, DDventureView.PRIMARY_STAGE_HEIGHT);
 
         //top section
-
-        Font titleFont = Font.loadFont(getClass().getResourceAsStream("fonts/alagard.ttf"), 34);
-        Font textFont = Font.loadFont(getClass().getResourceAsStream("fonts/alagard.ttf"), 24);
+        Font titleFont = Font.font("Alagard", 34);
+        Font textFont = Font.font("Alagard", 24);
         this.title = new Label("Breve guida su come usare DDventure");
         this.title.setFont(titleFont);
         BorderPane.setMargin(this.title, new Insets(30,0,30,0));
@@ -56,9 +49,8 @@ public class GuideScene extends BorderPane {
         this.setCenter(this.guide);
 
         //bottom section
-        Font buttonFont = Font.loadFont(getClass().getResourceAsStream("fonts/alagard.ttf"), 24);
         this.gobackbotton = new Button("Indietro");
-        this.gobackbotton.setFont(buttonFont);
+        this.gobackbotton.setFont(textFont);
         BorderPane.setAlignment(this.gobackbotton, Pos.CENTER);
         BorderPane.setMargin(this.gobackbotton, new Insets(30,0,30,0));
 

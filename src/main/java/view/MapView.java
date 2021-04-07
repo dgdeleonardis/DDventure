@@ -7,8 +7,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import logic.Cell;
+import javafx.scene.paint.Color;
 import logic.CharacterInGame;
+import logic.Map;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,9 +18,6 @@ public class MapView extends Canvas {
 
     private static final String TEXTURE_MAP_FILE_NAME = "image/texture-map.png";
 
-    private Cell[][] map;
-    public int columns;
-    public int rows;
     public ArrayList<CharacterInGame> characterInGame;
 
     private static final HashMap<Integer, Rectangle2D> LAND_TEXTURE_MASK_MAP = new HashMap<Integer, Rectangle2D>() {{
@@ -30,53 +28,27 @@ public class MapView extends Canvas {
 
     public MapView(double width, double height) {
         super(width, height);
-        double moltiplicatoreGrandezza = MapScene.ITEM_DIMENSION_OF_THE_MAP_BOX.get("piccola");
-        // roba da eliminare in seguito
-        // genero una mappa casuale
-        int columns = (int) Math.round(16*moltiplicatoreGrandezza);
-        int rows = (int) Math.round(9*moltiplicatoreGrandezza);
-        Cell[][] modelMap = new Cell[columns][rows];
-        for(int i = 0; i < 16*moltiplicatoreGrandezza; i++) {
-            for (int j = 0; j < 9*moltiplicatoreGrandezza; j++) {
-                modelMap[i][j] = new Cell((int) Math.ceil(Math.random() * 3.0));
-            }
-        }
-        map = modelMap;
-        draw();
     }
 
-    public MapView(double width, double height, Cell[][] map) {
-        super(width, height);
-        this.map = map;
-        draw();
-
-
-
-    }
-
-    public void draw() {
+    public void drawMap(Map map) {
         GraphicsContext gc = getGraphicsContext2D();
         gc.clearRect(0, 0,getWidth(), getHeight());
-        columns = map.length;
-        rows = map[0].length;
+        int columns = map.getColumns();
+        int rows = map.getRows();
         gc.setLineWidth(3);
         Image textureMapImage = new Image(getClass().getResourceAsStream(TEXTURE_MAP_FILE_NAME));
         for(int i = 0; i < columns; i++) {
             for(int j = 0; j < rows; j++) {
                 gc.strokeRect(getWidth()/columns*i, getHeight()/rows*j, getWidth()/columns, getHeight()/rows);
                 gc.drawImage(textureMapImage,
-                        LAND_TEXTURE_MASK_MAP.get(map[i][j].getCrossingCost()).getMinX(),
-                        LAND_TEXTURE_MASK_MAP.get(map[i][j].getCrossingCost()).getMinY(),
-                        LAND_TEXTURE_MASK_MAP.get(map[i][j].getCrossingCost()).getWidth(),
-                        LAND_TEXTURE_MASK_MAP.get(map[i][j].getCrossingCost()).getHeight(),
+                        LAND_TEXTURE_MASK_MAP.get(map.getCells()[i][j].getCrossingCost()).getMinX(),
+                        LAND_TEXTURE_MASK_MAP.get(map.getCells()[i][j].getCrossingCost()).getMinY(),
+                        LAND_TEXTURE_MASK_MAP.get(map.getCells()[i][j].getCrossingCost()).getWidth(),
+                        LAND_TEXTURE_MASK_MAP.get(map.getCells()[i][j].getCrossingCost()).getHeight(),
                         getWidth()/columns*i, getHeight()/rows*j, getWidth()/columns, getHeight()/rows);
             }
         }
-        drawPersonaggi(gc);
-    }
-
-    public void setMap(Cell[][] map) {
-        this.map = map;
+        //drawPersonaggi(gc);
     }
 
     public void drawPersonaggi(GraphicsContext gc) {
@@ -118,4 +90,14 @@ public class MapView extends Canvas {
         return outputImage;
     }
 
+    public void drawBorderCell(int i, int j, Map modelMap) {
+        GraphicsContext gc = getGraphicsContext2D();
+        int mapColumns = modelMap.getColumns();
+        int mapRows = modelMap.getRows();
+        gc.setStroke(Color.ORANGE);
+        gc.strokeRect(i*(getWidth()/mapColumns),
+                j*(getHeight()/mapRows),
+                getWidth()/mapColumns,
+                getHeight()/mapRows);
+    }
 }

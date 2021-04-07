@@ -26,7 +26,7 @@ public class MainMenu extends BorderPane  {
 
         //top section
         this.title = new Label("DDventures");
-        Font titleFont = Font.loadFont(getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), 74);
+        Font titleFont = Font.font("Alagard", 74);
         this.title.setFont(titleFont);
         this.title.setTextFill(Color.WHITE);
         this.setTop(this.title);

@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Transform;
 import javafx.util.Callback;
+import logic.DDventureLogic;
 
 import java.util.HashMap;
 
@@ -59,7 +60,7 @@ public class PlayerScene extends BorderPane {
     protected Label initiativeL;
     protected TextField initiativeInsert;
     protected Label teamL;
-    protected ChoiceBox teamChoice;
+    protected ChoiceBox<String> teamChoice;
     protected VBox lsection;
 
     //right section
@@ -73,7 +74,7 @@ public class PlayerScene extends BorderPane {
 
 
     protected Label weaponL;
-    protected ComboBox weaponBox;
+    protected ComboBox<String> weaponBox;
     protected Label weaponDamageL;
     protected TextField weaponDamageInsert;
     protected Label tcL;
@@ -103,6 +104,21 @@ public class PlayerScene extends BorderPane {
         BorderPane.setAlignment(this.title, Pos.CENTER);
 
         //left section
+        Button saveCharacterButton = new Button("Salva personaggio");
+        saveCharacterButton.setFont(textFont);
+        saveCharacterButton.setOnAction(event -> {
+            //TODO: implementare saveCharacter();
+        });
+
+        Button loadCharacterButton = new Button("Carica personaggio");
+        loadCharacterButton.setFont(textFont);
+        loadCharacterButton.setOnAction(event -> {
+            //TODO: implementare loadCharacter();
+        });
+
+        HBox saveAndLoadBox = new HBox(saveCharacterButton, loadCharacterButton);
+        saveAndLoadBox.setSpacing(30.0);
+
         this.nameL = new Label("Nome");
         this.nameL.setFont(textFont);
         this.nameInsert = new TextField();
@@ -130,16 +146,13 @@ public class PlayerScene extends BorderPane {
         initiative.setSpacing(20);
         this.teamL = new Label("Schieramento");
         this.teamL.setFont(textFont);
-        this.teamChoice = new ChoiceBox();
-        this.teamChoice.getItems().addAll("2",
-                "3",
-                "4",
-                "5",
-                "6");
+        this.teamChoice = new ChoiceBox<>();
+        //FIXME: popolare la teamChoice con i nome degli schieramenti
+        this.teamChoice.getItems().addAll(DDventureLogic.getInstance().getTeamNames());
         HBox team = new HBox(this.teamL, this.teamChoice);
         initiative.setSpacing(20);
 
-        this.lsection = new VBox(name, pf, ca, speed, initiative, team);
+        this.lsection = new VBox(saveAndLoadBox, name, pf, ca, speed, initiative, team);
         setLeft(this.lsection);
         BorderPane.setAlignment(this.lsection, Pos.CENTER);
         BorderPane.setMargin(this.lsection, new Insets(50, 0, 0, 80));
@@ -191,7 +204,7 @@ public class PlayerScene extends BorderPane {
 
         this.weaponL = new Label("Arma");
         this.weaponL.setFont(textFont);
-        this.weaponBox = new ComboBox();
+        this.weaponBox = new ComboBox<>();
         HBox weapon = new HBox(this.weaponL, this.weaponBox);
         this.weaponDamageL = new Label("Dado Danni");
         this.weaponDamageL.setFont(textFont);
@@ -225,19 +238,23 @@ public class PlayerScene extends BorderPane {
         this.confirmButton = new Button("Avanti");
         this.nextPlayer = new Button("Prossimo Giocatore");
         this.nextPlayer.setOnAction(event -> {
-            /* TODO MODEL: funzione creaPersonaggio(elenco delle caratteristiche + arma + nome della categoria dello sprite + schieramento)
-                VIEW funzione che esegue una "pulizia" della schermata sulle caselle di testo
-             */
+            createCharacterInGame();
+            clear();
         });
 
-        // TODO: aggiungere tasto salva personaggio e gestirlo come per il caso della Mappa
         HBox nextHBox = new HBox(this.nextPlayer, this.confirmButton);
         nextHBox.setSpacing(100);
         this.confirmButton.setFont(textFont);
         confirmButton.setOnAction( event -> {
+            createCharacterInGame();
             DDventureView.getInstance().createAnOpenMapScene();
         });
         this.backButton.setFont(textFont);
+        this.backButton.setOnAction(event -> {
+            DDventureLogic.getInstance().deleteCharactersInGame();
+            DDventureLogic.getInstance().deleteTeams();
+            DDventureView.getInstance().createAnOpenTeamScene();
+        });
         this.nextPlayer.setFont(textFont);
 
         this.bottomPane.getChildren().addAll(this.backButton, nextHBox);
@@ -246,5 +263,33 @@ public class PlayerScene extends BorderPane {
         AnchorPane.setRightAnchor(nextHBox, 10.0);
         AnchorPane.setBottomAnchor(nextHBox, 10.0);
         setBottom(this.bottomPane);
+    }
+
+    private void createCharacterInGame() {
+        DDventureLogic.getInstance().createCharacterInGame(
+                nameInsert.getText(),
+                Integer.parseInt(pfInsert.getText()),
+                Integer.parseInt(caInsert.getText()),
+                Integer.parseInt(speedInsert.getText()),
+                Integer.parseInt(initiativeInsert.getText()),
+                avatarComboBox.getSelectionModel().getSelectedItem(),
+                teamChoice.getSelectionModel().getSelectedItem(),
+                weaponBox.getSelectionModel().getSelectedItem(),
+                Integer.parseInt(weaponDamageInsert.getText()),
+                Integer.parseInt(tcInsert.getText())
+        );
+    }
+
+    private void clear() {
+        nameInsert.clear();
+        pfInsert.clear();
+        caInsert.clear();
+        speedInsert.clear();
+        initiativeInsert.clear();
+        avatarComboBox.getSelectionModel().selectFirst();
+        teamChoice.getSelectionModel().selectFirst();
+        weaponBox.getSelectionModel().selectFirst();
+        weaponDamageInsert.clear();
+        tcInsert.clear();
     }
 }

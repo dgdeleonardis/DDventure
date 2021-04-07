@@ -1,17 +1,28 @@
 package logic;
 
 public class CharacterInGame extends Character {
+    private Team team;
     private int coordinataX;
     private int coordinataY;
     private int turnOrder;
     private boolean hasAttacked;
 
-    public CharacterInGame(String name, int pf, int ca, int speed, int initiative, String avatar, int coordinataX, int coordinataY) {
-        super(name, pf, ca, speed, initiative, avatar);
+    public CharacterInGame(String name, int pf, int ca, int speed, int initiative, String avatar, int coordinataX, int coordinataY, Weapon weapon, Team team) {
+        super(name, pf, ca, speed, initiative, avatar, weapon);
+        this.team = team;
         this.coordinataX = coordinataX;
         this.coordinataY = coordinataY;
         this.turnOrder = 0;
         this.hasAttacked = false;
+    }
+
+    public CharacterInGame(String name, int pf, int ca, int speed, int initiative, String avatar, Team team, Weapon weapon) {
+        super(name, pf, ca, speed, initiative, avatar, weapon);
+        this.team = team;
+        coordinataX = -1;
+        coordinataY = -1;
+        turnOrder = -1;
+        hasAttacked = false;
     }
 
     public int getCoordinataX() {
@@ -44,5 +55,9 @@ public class CharacterInGame extends Character {
 
     public void setHasAttacked(boolean hasAttacked) {
         this.hasAttacked = hasAttacked;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

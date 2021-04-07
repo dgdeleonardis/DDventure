@@ -14,8 +14,6 @@ public interface IView {
 
     public MusicManager getMusicManager();
 
-    public void getOpenMainScene();
-
     public void createAnOpenMainMenuScene();
 
     public void createAnOpenOptionScene(Stage currentStage);
