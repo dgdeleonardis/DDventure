@@ -17,7 +17,7 @@ import logic.DDventureLogic;
 
 import java.util.HashMap;
 
-public class PlayerScene extends BorderPane {
+public class CharacterCreationMenuView extends BorderPane {
 
     public static final String AVATAR_DIRECTORY_RELATIVE_PATH = "image/avatar/";
 
@@ -87,18 +87,18 @@ public class PlayerScene extends BorderPane {
     protected Button nextPlayer;
     protected Button confirmButton;
 
-    public PlayerScene(){
+    public CharacterCreationMenuView(){
         super();
         setPrefSize(
                 DDventureView.PRIMARY_STAGE_WIDTH - (30*2),
                 DDventureView.PRIMARY_STAGE_HEIGHT - (30*2));
         setPadding(new Insets(10, 10, 10, 10));
 
-        Font textFont = Font.loadFont(this.getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), 24);
+        Font textFont = Font.font("Alagard", 24);
 
         //top section
         this.title = new Label("Costruzione del personaggio");
-        this.title.setFont(Font.loadFont(this.getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), 34));
+        this.title.setFont(Font.font("Alagard", 34));
         setTop(this.title);
         BorderPane.setMargin(this.title, new Insets(30, 0, 30, 0));
         BorderPane.setAlignment(this.title, Pos.CENTER);
@@ -147,7 +147,7 @@ public class PlayerScene extends BorderPane {
         this.teamL = new Label("Schieramento");
         this.teamL.setFont(textFont);
         this.teamChoice = new ChoiceBox<>();
-        //FIXME: popolare la teamChoice con i nome degli schieramenti
+
         this.teamChoice.getItems().addAll(DDventureLogic.getInstance().getTeamNames());
         HBox team = new HBox(this.teamL, this.teamChoice);
         initiative.setSpacing(20);
@@ -167,7 +167,7 @@ public class PlayerScene extends BorderPane {
         this.avatarL.setFont(textFont);
 
         this.avatarComboBox = new ComboBox();
-        PlayerScene.SPRITE_MAP.forEach( (k, v) -> {
+        CharacterCreationMenuView.SPRITE_MAP.forEach( (k, v) -> {
             this.avatarComboBox.getItems().add(k);
         });
         this.avatarComboBox.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
@@ -178,7 +178,7 @@ public class PlayerScene extends BorderPane {
         });
 
         this.avatarComboBox.getSelectionModel().selectFirst();
-
+        //FIXME: possibilità di convertire la ComboBox in una ChoiceBox;
         this.avatarComboBox.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
             @Override
             public ListCell<String> call(ListView<String> param) {

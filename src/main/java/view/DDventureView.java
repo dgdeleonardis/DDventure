@@ -175,9 +175,9 @@ public class DDventureView implements IView{
     public void createAnOpenPlayerScene() {
         if(creationGamePane != null) {
             creationGamePane.getChildren().clear();
-            PlayerScene playerScene = new PlayerScene();
-            creationGamePane.getChildren().add(playerScene);
-            centerPanel(playerScene, 0);
+            CharacterCreationMenuView characterCreationMenuView = new CharacterCreationMenuView();
+            creationGamePane.getChildren().add(characterCreationMenuView);
+            centerPanel(characterCreationMenuView, 0);
         }
     }
 
