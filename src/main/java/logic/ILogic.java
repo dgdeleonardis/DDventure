@@ -19,6 +19,8 @@ public interface ILogic {
 
     Map getTempMap();
 
+    Character getTempCharacter();
+
     void setGameMap();
 
     Map getGameMap();
@@ -26,4 +28,10 @@ public interface ILogic {
     Game getGame();
 
     boolean saveCharacter(String fileName);
+
+    boolean loadCharacter(String fileName);
+
+    boolean saveMap(String fileName);
+
+    boolean loadMap(String fileName);
 }

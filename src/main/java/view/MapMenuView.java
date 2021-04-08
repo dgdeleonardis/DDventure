@@ -71,7 +71,10 @@ public class MapMenuView extends BorderPane {
         this.saveMap.setFont(Font.loadFont(this.getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), BUTTON_FONT_SIZE));
         this.saveMap.setMinWidth(250);
         this.saveMap.setOnAction(event -> {
-            // TODO MODEL: salvaMappa se il canvas non è vuoto (VIEW) in una cartella prefissata creata con l'istanziamento del Model
+            if(DDventureLogic.getInstance().getTempMap() != null) {
+                String fileName = DDventureView.getInstance().openSaveStage();
+                DDventureLogic.getInstance().saveMap(fileName);
+            }
         });
 
         VBox leftside = new VBox(dimensionOfTheMap, this.createMap, this.saveMap);
@@ -82,7 +85,10 @@ public class MapMenuView extends BorderPane {
         this.loadMap.setFont(Font.loadFont(this.getClass().getResourceAsStream(DDventureView.FONT_FILE_NAME), BUTTON_FONT_SIZE));
         this.loadMap.setMinWidth(250);
         this.loadMap.setOnAction(event -> {
-            // TODO model: stesso discorso della partita.
+            String fileName = DDventureView.getInstance().openLoadStage();
+            if(DDventureLogic.getInstance().loadMap(fileName)) {
+                map.drawMap(DDventureLogic.getInstance().getTempMap());
+            }
         });
 
         //right
@@ -113,11 +119,6 @@ public class MapMenuView extends BorderPane {
         });
         setCenter(this.map);
         BorderPane.setAlignment(this.map, Pos.CENTER);
-
-
-
-
-
     }
 
 }

@@ -130,7 +130,9 @@ public class CharacterCreationMenuView extends BorderPane {
         Button loadCharacterButton = new Button("Carica personaggio");
         loadCharacterButton.setFont(textFont);
         loadCharacterButton.setOnAction(event -> {
-            //TODO: implementare loadCharacter();
+            String fileName = DDventureView.getInstance().openLoadStage();
+            DDventureLogic.getInstance().loadCharacter(fileName);
+            populateView();
         });
 
         HBox saveAndLoadBox = new HBox(saveCharacterButton, loadCharacterButton);
@@ -280,6 +282,18 @@ public class CharacterCreationMenuView extends BorderPane {
         AnchorPane.setRightAnchor(nextHBox, 10.0);
         AnchorPane.setBottomAnchor(nextHBox, 10.0);
         setBottom(this.bottomPane);
+    }
+
+    private void populateView() {
+        nameInsert.setText(DDventureLogic.getInstance().getTempCharacter().getName());
+        pfInsert.setText(Integer.toString(DDventureLogic.getInstance().getTempCharacter().getPF()));
+        caInsert.setText(Integer.toString(DDventureLogic.getInstance().getTempCharacter().getCA()));
+        speedInsert.setText(Integer.toString(DDventureLogic.getInstance().getTempCharacter().getSpeed()));
+        initiativeInsert.setText(Integer.toString(DDventureLogic.getInstance().getTempCharacter().getInitiative()));
+        //avatarComboBox.getSelectionModel().select();
+        avatarComboBox.getSelectionModel().selectFirst();
+        //weaponBox.getSelectionModel().select();
+        weaponBox.getSelectionModel().selectFirst();
     }
 
     private void createCharacterInGame() {

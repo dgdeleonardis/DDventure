@@ -37,4 +37,6 @@ public interface IView {
     public void createAnOpenPauseMenu();
 
     public String openSaveStage();
+
+    public String openLoadStage();
 }

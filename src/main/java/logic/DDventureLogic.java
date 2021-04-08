@@ -105,6 +105,10 @@ public class DDventureLogic implements ILogic{
         return tempMap;
     }
 
+    public Character getTempCharacter() {
+        return tempCharacter;
+    }
+
     @Override
     public void setGameMap() {
         game.setMap(tempMap);
@@ -123,5 +127,32 @@ public class DDventureLogic implements ILogic{
     @Override
     public boolean saveCharacter(String fileName) {
         return XMLSaveAndLoadManager.saveCharacter(fileName, tempCharacter);
+    }
+
+    @Override
+    public boolean loadCharacter(String fileName) {
+        Character character = XMLSaveAndLoadManager.loadCharacter(fileName);
+        if(character != null) {
+            tempCharacter = character;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean saveMap(String fileName) {
+        return XMLSaveAndLoadManager.saveMap(fileName, tempMap);
+    }
+
+    @Override
+    public boolean loadMap(String fileName) {
+        Map map = XMLSaveAndLoadManager.loadMap(fileName);
+        if(map != null) {
+            tempMap = map;
+            return true;
+        } else {
+            return false;
+        }
     }
 }

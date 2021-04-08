@@ -35,6 +35,10 @@ public class Map {
         return selectionMode;
     }
 
+    public Cell getCell(int column, int row) {
+        return cells[column][row];
+    }
+
     public void setSource(int i, int j) {
         if(cells[i][j].isOccupied()) {
             iSource = i;

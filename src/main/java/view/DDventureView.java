@@ -246,4 +246,11 @@ public class DDventureView implements IView{
         FileChooser fileChooser = new FileChooser();
         return fileChooser.showSaveDialog(saveStage).getAbsolutePath();
     }
+
+    @Override
+    public String openLoadStage() {
+        Stage loadStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        return fileChooser.showOpenDialog(loadStage).getAbsolutePath();
+    }
 }
