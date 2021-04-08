@@ -31,4 +31,8 @@ public class Team {
     public void addToTeam(CharacterInGame player) {
         members.add(player);
     }
+
+    public CharacterInGame[] getMembers() {
+        return (CharacterInGame[]) members.toArray();
+    }
 }

@@ -9,6 +9,7 @@ public class DDventureLogic implements ILogic{
 
     private Game game;
     private Map tempMap;
+    private Character tempCharacter;
 
     private final static int DEFAULT_COLUMNS = 16;
     private final static int DEFAULT_ROWS = 9;
@@ -60,6 +61,13 @@ public class DDventureLogic implements ILogic{
     }
 
     @Override
+    public void createCharacter(String name, int pf, int ca, int speed, int initiative, String avatar, String weaponName, int damageDice, int tpcModifier) {
+        tempCharacter = new Character(name, pf, ca, speed, initiative, avatar,
+                new Weapon(weaponName,damageDice, tpcModifier)
+        );
+    }
+
+    @Override
     public void deleteCharactersInGame() {
         game.getCharactersInGame().clear();
     }
@@ -105,5 +113,15 @@ public class DDventureLogic implements ILogic{
     @Override
     public Map getGameMap() {
         return game.getMap();
+    }
+
+    @Override
+    public Game getGame() {
+        return game;
+    }
+
+    @Override
+    public boolean saveCharacter(String fileName) {
+        return XMLSaveAndLoadManager.saveCharacter(fileName, tempCharacter);
     }
 }

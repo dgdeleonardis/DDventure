@@ -7,6 +7,8 @@ public interface ILogic {
 
     void createCharacterInGame(String name, int pf, int ca, int speed, int initiative, String avatar, String teamName, String weaponName, int damageDice, int tpcModifier);
 
+    void createCharacter(String name, int pf, int ca, int speed, int initiative, String avatar, String weaponName, int damageDice, int tpcModifier);
+
     void deleteCharactersInGame();
 
     void deleteTeams();
@@ -20,4 +22,8 @@ public interface ILogic {
     void setGameMap();
 
     Map getGameMap();
+
+    Game getGame();
+
+    boolean saveCharacter(String fileName);
 }

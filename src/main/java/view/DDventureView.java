@@ -1,10 +1,12 @@
 package view;
 
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -185,9 +187,9 @@ public class DDventureView implements IView{
     public void createAnOpenMapScene() {
         if(creationGamePane != null) {
             creationGamePane.getChildren().clear();
-            MapScene mapScene = new MapScene();
-            creationGamePane.getChildren().add(mapScene);
-            centerPanel(mapScene, 0);
+            MapMenuView mapMenuView = new MapMenuView();
+            creationGamePane.getChildren().add(mapMenuView);
+            centerPanel(mapMenuView, 0);
         }
     }
 
@@ -237,5 +239,11 @@ public class DDventureView implements IView{
         AnchorPane.setBottomAnchor(childPane, value);
         AnchorPane.setLeftAnchor(childPane, value);
         AnchorPane.setRightAnchor(childPane, value);
+    }
+
+    public String openSaveStage() {
+        Stage saveStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        return fileChooser.showSaveDialog(saveStage).getAbsolutePath();
     }
 }

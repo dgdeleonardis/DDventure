@@ -7,12 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
-import logic.Cell;
 import logic.DDventureLogic;
 
 import java.util.HashMap;
 
-public class MapScene extends BorderPane {
+public class MapMenuView extends BorderPane {
 
     private static final int TITLE_FONT_SIZE = 64;
     private static final int BUTTON_FONT_SIZE = 24;
@@ -40,7 +39,7 @@ public class MapScene extends BorderPane {
     // TODO: è un MapView
     private MapView map; //800x450
 
-    public MapScene() {
+    public MapMenuView() {
         super();
         setPrefSize(
                 DDventureView.PRIMARY_STAGE_WIDTH - (30*2),

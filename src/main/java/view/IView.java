@@ -35,4 +35,6 @@ public interface IView {
     public void createAnOpenVictoryStage();
 
     public void createAnOpenPauseMenu();
+
+    public String openSaveStage();
 }

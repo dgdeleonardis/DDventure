@@ -107,7 +107,24 @@ public class CharacterCreationMenuView extends BorderPane {
         Button saveCharacterButton = new Button("Salva personaggio");
         saveCharacterButton.setFont(textFont);
         saveCharacterButton.setOnAction(event -> {
-            //TODO: implementare saveCharacter();
+            //TODO: implementare salvataggio scegliendo il percorso del file e il nome.
+            DDventureLogic.getInstance().createCharacter(
+                    nameInsert.getText(),
+                    Integer.parseInt(pfInsert.getText()),
+                    Integer.parseInt(caInsert.getText()),
+                    Integer.parseInt(speedInsert.getText()),
+                    Integer.parseInt(initiativeInsert.getText()),
+                    avatarComboBox.getSelectionModel().getSelectedItem(),
+                    weaponBox.getSelectionModel().getSelectedItem(),
+                    Integer.parseInt(weaponDamageInsert.getText()),
+                    Integer.parseInt(tcInsert.getText())
+            );
+            String fileName = DDventureView.getInstance().openSaveStage();
+            if(DDventureLogic.getInstance().saveCharacter(fileName)) {
+                System.out.println("Operazione andata a buon fine");
+            } else {
+                System.out.println("Qualcosa è andato storto");
+            }
         });
 
         Button loadCharacterButton = new Button("Carica personaggio");
@@ -239,7 +256,7 @@ public class CharacterCreationMenuView extends BorderPane {
         this.nextPlayer = new Button("Prossimo Giocatore");
         this.nextPlayer.setOnAction(event -> {
             createCharacterInGame();
-            clear();
+            clearView();
         });
 
         HBox nextHBox = new HBox(this.nextPlayer, this.confirmButton);
@@ -280,7 +297,7 @@ public class CharacterCreationMenuView extends BorderPane {
         );
     }
 
-    private void clear() {
+    private void clearView() {
         nameInsert.clear();
         pfInsert.clear();
         caInsert.clear();

@@ -1,7 +1,7 @@
 package logic;
 
 public class Character {
-    protected String name;
+    private String name;
     protected Integer pf;
     protected Integer ca;
     protected Integer speed;
@@ -41,5 +41,9 @@ public class Character {
 
     public String getAvatar(){
         return this.avatar;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
     }
 }
