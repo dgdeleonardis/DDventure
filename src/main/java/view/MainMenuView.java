@@ -15,14 +15,7 @@ public class MainMenuView extends BorderPane  {
     private final static int BUTTOM_FONT_SIZE = 24;
     private final static int GENERIC_SPACING = 30;
     private final static double BUTTON_MIN_WIDTH = 320;
-
-    //center
-    protected VBox centerBox;
-    protected Button startGame;
-    protected Button loadGameButton;
-    //bottom
-    protected Button optionbutton;
-
+    
     public MainMenuView() {
         super();
         setPrefSize(DDventureView.PRIMARY_STAGE_WIDTH, DDventureView.PRIMARY_STAGE_HEIGHT);
