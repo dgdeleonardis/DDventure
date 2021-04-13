@@ -22,7 +22,7 @@ import logic.DDventureLogic;
 public class InitiativeView extends BorderPane {
 
     final static String ROLL_DICE_IMAGE = "image/r09.png";
-    
+
     public InitiativeView() {
         super();
         setPrefSize(DDventureView.PRIMARY_STAGE_WIDTH - 30, DDventureView.PRIMARY_STAGE_HEIGHT - 30);

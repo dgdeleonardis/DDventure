@@ -37,7 +37,6 @@ public class DDventureView implements IView{
     private Scene mainScene;
     private AnchorPane creationGamePane;
 
-    private Scene initiativeScene;
     private Scene pauseScene;
     private Scene victoryScene;
 
@@ -101,9 +100,9 @@ public class DDventureView implements IView{
             backgroundPane = (AnchorPane) mainScene.getRoot();
         }
         backgroundPane.getChildren().clear();
-        MainMenu mainMenu = new MainMenu();
-        backgroundPane.getChildren().add(mainMenu);
-        centerPanel(mainMenu, 0);
+        MainMenuView mainMenuView = new MainMenuView();
+        backgroundPane.getChildren().add(mainMenuView);
+        centerPanel(mainMenuView, 0);
     }
 
     @Override
@@ -147,9 +146,9 @@ public class DDventureView implements IView{
             secondaryStage.setX(primaryStage.getX() + primaryStage.getWidth()/2 - secondaryStage.getWidth()/2);
             secondaryStage.setY(primaryStage.getY() + primaryStage.getHeight()/2 - secondaryStage.getHeight()/2);
         }
-        GuideScene guideScene = new GuideScene(currentStage);
-        backgroundPane.getChildren().add(guideScene);
-        centerPanel(guideScene, 0);
+        GuideView guideView = new GuideView(currentStage);
+        backgroundPane.getChildren().add(guideView);
+        centerPanel(guideView, 0);
 
     }
 
@@ -205,7 +204,7 @@ public class DDventureView implements IView{
     public void createAnOpenGameScene() {
         if(creationGamePane != null) {
             creationGamePane.getChildren().clear();
-            GameScene gameView = new GameScene();
+            GameView gameView = new GameView();
             creationGamePane.getChildren().add(gameView);
             centerPanel(gameView, 0);
         }

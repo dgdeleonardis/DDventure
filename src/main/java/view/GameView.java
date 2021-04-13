@@ -15,7 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import logic.DDventureLogic;
 
-public class GameScene extends BorderPane {
+public class GameView extends BorderPane {
 
     private static final double MAP_WIDHT = 720;
     private static final double MAP_HEIGHT = 450;
@@ -34,7 +34,7 @@ public class GameScene extends BorderPane {
     private Button attackButton;
     private Button moveButton;
 
-    public GameScene(){
+    public GameView(){
         super();
         setPrefSize(
                 DDventureView.PRIMARY_STAGE_WIDTH - (30*2),

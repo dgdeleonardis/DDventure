@@ -9,13 +9,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
-public class GuideScene extends BorderPane {
+public class GuideView extends BorderPane {
     private Label title;
     private Text guide;
     private Button gobackbotton;
     private final Stage currentStage;
 
-    public GuideScene(Stage currentStage) {
+    public GuideView(Stage currentStage) {
         super();
         this.currentStage = currentStage;
         setPrefSize(DDventureView.PRIMARY_STAGE_WIDTH, DDventureView.PRIMARY_STAGE_HEIGHT);
