@@ -8,8 +8,8 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import logic.CharacterInGame;
-import logic.Map;
+import javafx.util.Pair;
+import logic.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class MapView extends Canvas {
     private static final HashMap<Integer, Rectangle2D> LAND_TEXTURE_MASK_MAP = new HashMap<Integer, Rectangle2D>() {{
         put(1, new Rectangle2D(16, 0, 16, 16));
         put(2, new Rectangle2D(208, 0, 16, 16));
-        put(3, new Rectangle2D(352, 0, 16, 16));
+        put(Integer.MAX_VALUE, new Rectangle2D(352, 0, 16, 16));
     }};
 
     public MapView(double width, double height) {
@@ -32,6 +32,7 @@ public class MapView extends Canvas {
 
     public void drawMap(Map map) {
         GraphicsContext gc = getGraphicsContext2D();
+        gc.setStroke(Color.BLACK);
         gc.clearRect(0, 0,getWidth(), getHeight());
         int columns = map.getColumns();
         int rows = map.getRows();
@@ -48,25 +49,21 @@ public class MapView extends Canvas {
                         getWidth()/columns*i, getHeight()/rows*j, getWidth()/columns, getHeight()/rows);
             }
         }
-        //drawPersonaggi(gc);
     }
 
-    public void drawPersonaggi(GraphicsContext gc) {
-        // TODO MODEL: getPersonaggiECoordinate()
-        /*Image annaSprite = makeTransparent(new Image(getClass().getResourceAsStream("image/anna_sheet.png")));
+
+
+    public void drawCharactersInGame() {
+        GraphicsContext gc = getGraphicsContext2D();
+        int columns = DDventureLogic.getInstance().getGameMap().getColumns();
+        int rows = DDventureLogic.getInstance().getGameMap().getRows();
+        Image annaSprite = makeTransparent(new Image(getClass().getResourceAsStream("image/anna_sheet.png")));
         // roba in più da eliminare più in là
-        characterInGame = new ArrayList<CharacterInGame>(){{
-           add(new CharacterInGame(4, 6));
-            add(new CharacterInGame(4, 7));
-            add(new CharacterInGame(4, 4));
-            add(new CharacterInGame(7, 10));
-            add(new CharacterInGame(9, 11));
-        }};
+        ArrayList<CharacterInGame> characterInGame = DDventureLogic.getInstance().getGame().getCharactersInGame();
         characterInGame.forEach(p -> {
             gc.drawImage(annaSprite, getWidth()/columns*p.getCoordinataX(), getHeight()/rows* p.getCoordinataY(),
                     getWidth()/columns, getHeight()/rows);
-        });*/
-
+        });
     }
 
     public Image makeTransparent(Image inputImage) {
@@ -79,7 +76,6 @@ public class MapView extends Canvas {
         for (int y = 0; y < H; y++) {
             for (int x = 0; x < W; x++) {
                 int argb = reader.getArgb(x, y);
-
                 String color = Integer.toHexString(argb);
                 if(color.equals("ffff00ff"))
                     writer.setArgb(x, y, 0);
@@ -100,4 +96,21 @@ public class MapView extends Canvas {
                 getWidth()/mapColumns,
                 getHeight()/mapRows);
     }
+
+    public void highlightCellsToMoveTo(Pair<Integer, Integer>[] cellsToMove, Color characterTeamColor) {
+        Map map = DDventureLogic.getInstance().getGameMap();
+        GraphicsContext gc = getGraphicsContext2D();
+        int columns = map.getColumns();
+        int rows = map.getRows();
+        //System.out.println(characterTeamColor.getRed() + " " + characterTeamColor.getGreen() + " " + characterTeamColor.getBlue());
+
+        gc.setFill(Color.rgb((int) (characterTeamColor.getRed()* 255), (int) (characterTeamColor.getGreen()* 255), (int) (characterTeamColor.getBlue() * 255), 0.4));
+        for (Pair<Integer, Integer> cell: cellsToMove) {
+        //  gc.strokeRect(getWidth()/columns*cell.getKey().intValue(), getHeight()/rows*cell.getValue().intValue(), getWidth()/columns, getHeight()/rows);
+            gc.fillRect(getWidth()/columns*cell.getKey().intValue(), getHeight()/rows*cell.getValue().intValue(), getWidth()/columns, getHeight()/rows);
+        }
+        drawCharactersInGame();
+
+    }
+
 }

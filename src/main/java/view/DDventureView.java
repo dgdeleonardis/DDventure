@@ -1,6 +1,5 @@
 package view;
 
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -38,7 +37,6 @@ public class DDventureView implements IView{
     private Scene mainScene;
     private AnchorPane creationGamePane;
 
-    private Scene gameScene;
     private Scene initiativeScene;
     private Scene pauseScene;
     private Scene victoryScene;
@@ -205,11 +203,22 @@ public class DDventureView implements IView{
 
     @Override
     public void createAnOpenGameScene() {
+        if(creationGamePane != null) {
+            creationGamePane.getChildren().clear();
+            GameScene gameView = new GameScene();
+            creationGamePane.getChildren().add(gameView);
+            centerPanel(gameView, 0);
+        }
     }
 
     @Override
     public void createAnOpenInitiativeScene() {
-
+        if(creationGamePane != null) {
+            creationGamePane.getChildren().clear();
+            InitiativeView initiativeView = new InitiativeView();
+            creationGamePane.getChildren().add(initiativeView);
+            centerPanel(initiativeView, 0);
+        }
     }
 
     @Override

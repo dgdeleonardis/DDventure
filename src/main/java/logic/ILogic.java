@@ -1,5 +1,9 @@
 package logic;
 
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+
 public interface ILogic {
 
 
@@ -34,4 +38,22 @@ public interface ILogic {
     boolean saveMap(String fileName);
 
     boolean loadMap(String fileName);
+
+    public void searchCellsToMove(CharacterInGame characterInGame);
+
+    public void generateRandomPositions();
+
+    boolean isInMoveMode();
+
+    void disableMoveMode();
+
+    void enableMoveMode();
+
+    Pair<Integer, Integer>[] getCellsToMove();
+
+    CharacterInGame getTurnCharacterInGame();
+
+    boolean moveCharacterInGame(CharacterInGame characterInGame, int iTarget, int jTarget);
+
+    ArrayList<CharacterInGame> characterTurnOrder();
 }

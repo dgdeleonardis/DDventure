@@ -6,7 +6,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.print.Doc;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -163,7 +162,7 @@ public class XMLSaveAndLoadManager {
         character.setAttribute("pf", Integer.toString(c.getPF()));
         character.setAttribute("ca", Integer.toString(c.getCA()));
         character.setAttribute("speed", Integer.toString(c.getSpeed()));
-        character.setAttribute("initiative", Integer.toString(c.getInitiative()));
+        character.setAttribute("initiative", Integer.toString(c.getInitiativeModifier()));
         character.setAttribute("avatar", c.getAvatar());
         character.appendChild(createDOMWeapon(doc, c.getWeapon()));
         return character;

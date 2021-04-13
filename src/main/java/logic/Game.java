@@ -11,6 +11,7 @@ public class Game {
     public Game() {
         teams = new ArrayList<>();
         charactersInGame = new ArrayList<>();
+
     }
 
     public Map getMap() {

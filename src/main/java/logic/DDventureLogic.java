@@ -1,7 +1,10 @@
 package logic;
 
 
+import javafx.util.Pair;
+
 import java.io.File;
+import java.util.*;
 
 public class DDventureLogic implements ILogic{
 
@@ -10,6 +13,10 @@ public class DDventureLogic implements ILogic{
     private Game game;
     private Map tempMap;
     private Character tempCharacter;
+
+    private boolean moveMode;
+    private ArrayList<Pair<Integer, Integer>> cellsToMove;
+    private int turnNumber;
 
     private final static int DEFAULT_COLUMNS = 16;
     private final static int DEFAULT_ROWS = 9;
@@ -24,6 +31,8 @@ public class DDventureLogic implements ILogic{
             new File(gameDirectory.getAbsolutePath() + "/saved_character").mkdir();
         }
         game = new Game();
+        moveMode = false;
+        turnNumber = 0;
     }
 
     public static ILogic getInstance() {
@@ -93,11 +102,11 @@ public class DDventureLogic implements ILogic{
         Cell[][] tempMapCells = new Cell[columns][rows];
         for(int i = 0; i < columns; i++) {
             for (int j = 0; j < rows; j++) {
-                tempMapCells[i][j] = new Cell((int) Math.ceil(Math.random() * 3.0));
+                tempMapCells[i][j] = new Cell(Map.TERRAIN_MAP.get((int) Math.ceil(Math.random() * 3.0)));
             }
         }
         tempMap = new Map(tempMapCells);
-        //TODO: implementare controllo D.
+        //TODO: implementare controllo Dijkstra
     }
 
     @Override
@@ -154,5 +163,158 @@ public class DDventureLogic implements ILogic{
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void searchCellsToMove(CharacterInGame characterInGame) {
+        cellsToMove = new ArrayList<>();
+        int xSource = characterInGame.getCoordinataX();
+        int ySource = characterInGame.getCoordinataY();
+        int movementLeft = characterInGame.speed;
+        Map mapGameCells = game.getMap();
+        if(movementLeft - mapGameCells.getCell(xSource, ySource).getCrossingCost() >= 0) {
+            cellsToMove.add(new Pair<>(xSource, ySource));
+            movementLeft -= mapGameCells.getCell(xSource, ySource).getCrossingCost();
+            searchCellsToMoveUpRic(cellsToMove, movementLeft, xSource, ySource - 1);
+            searchCellsToMoveDownRic(cellsToMove, movementLeft, xSource, ySource + 1);
+            searchCellsToMoveLeftRic(cellsToMove, movementLeft, xSource - 1, ySource);
+            searchCellsToMoveRightRic(cellsToMove, movementLeft, xSource + 1, ySource);
+        }
+        cellsToMove = removeDuplicates(cellsToMove);
+    }
+
+    private void searchCellsToMoveUpRic(ArrayList<Pair<Integer, Integer>> cellsToMove, int movementLeft, int iSource, int jSource) {
+        Map mapGameCells = game.getMap();
+        if((iSource >= 0 && iSource < mapGameCells.getColumns()) && (jSource >= 0 && jSource < mapGameCells.getRows())) {
+            if(movementLeft - mapGameCells.getCell(iSource, jSource).getCrossingCost() >= 0) {
+                cellsToMove.add(new Pair<>(iSource, jSource));
+                movementLeft -= mapGameCells.getCell(iSource, jSource).getCrossingCost();
+                searchCellsToMoveLeftRic(cellsToMove, movementLeft, iSource - 1, jSource);
+                searchCellsToMoveRightRic(cellsToMove, movementLeft, iSource + 1, jSource);
+                searchCellsToMoveUpRic(cellsToMove, movementLeft, iSource, jSource - 1);
+            }
+        }
+    }
+
+    private void searchCellsToMoveLeftRic(ArrayList<Pair<Integer, Integer>> cellsToMove, int movementLeft, int iSource, int jSource) {
+        Map mapGameCells = game.getMap();
+        if((iSource >= 0 && iSource < mapGameCells.getColumns()) && (jSource >= 0 && jSource < mapGameCells.getRows())) {
+            if(movementLeft - mapGameCells.getCell(iSource, jSource).getCrossingCost() >= 0) {
+                cellsToMove.add(new Pair<>(iSource, jSource));
+                movementLeft -= mapGameCells.getCell(iSource, jSource).getCrossingCost();
+                searchCellsToMoveLeftRic(cellsToMove, movementLeft, iSource - 1, jSource);
+                searchCellsToMoveDownRic(cellsToMove, movementLeft, iSource, jSource + 1);
+                searchCellsToMoveUpRic(cellsToMove, movementLeft, iSource, jSource - 1);
+            }
+        }
+    }
+
+    private void searchCellsToMoveRightRic(ArrayList<Pair<Integer, Integer>> cellsToMove, int movementLeft, int iSource, int jSource) {
+        Map mapGameCells = game.getMap();
+        if((iSource >= 0 && iSource < mapGameCells.getColumns()) && (jSource >= 0 && jSource < mapGameCells.getRows())) {
+            if(movementLeft - mapGameCells.getCell(iSource, jSource).getCrossingCost() >= 0) {
+                cellsToMove.add(new Pair<>(iSource, jSource));
+                movementLeft -= mapGameCells.getCell(iSource, jSource).getCrossingCost();
+                searchCellsToMoveRightRic(cellsToMove, movementLeft, iSource + 1, jSource);
+                searchCellsToMoveDownRic(cellsToMove, movementLeft, iSource, jSource + 1);
+                searchCellsToMoveUpRic(cellsToMove, movementLeft, iSource, jSource - 1);
+            }
+        }
+    }
+
+    private void searchCellsToMoveDownRic(ArrayList<Pair<Integer, Integer>> cellsToMove, int movementLeft, int iSource, int jSource) {
+        Map mapGameCells = game.getMap();
+        if((iSource >= 0 && iSource < mapGameCells.getColumns()) && (jSource >= 0 && jSource < mapGameCells.getRows())) {
+            if(movementLeft - mapGameCells.getCell(iSource, jSource).getCrossingCost() >= 0) {
+                cellsToMove.add(new Pair<>(iSource, jSource));
+                movementLeft -= mapGameCells.getCell(iSource, jSource).getCrossingCost();
+                searchCellsToMoveRightRic(cellsToMove, movementLeft, iSource + 1, jSource);
+                searchCellsToMoveDownRic(cellsToMove, movementLeft, iSource, jSource + 1);
+                searchCellsToMoveLeftRic(cellsToMove, movementLeft, iSource - 1, jSource);
+            }
+        }
+    }
+
+    private ArrayList<Pair<Integer, Integer>> removeDuplicates(ArrayList<Pair<Integer, Integer>> list) {
+        Set<Pair<Integer, Integer>> set = new HashSet<>();
+        set.addAll(list);
+        list.clear();
+        list.addAll(set);
+        return list;
+    }
+
+    @Override
+    public void generateRandomPositions() {
+        Map map = game.getMap();
+        game.getCharactersInGame().forEach( characterInGame -> {
+            boolean flag = true;
+            while(flag) {
+                int i = (int) Math.floor(Math.random()*map.getColumns());
+                int j = (int) Math.floor(Math.random()*map.getRows());
+                if(!map.getCell(i, j).isOccupied() && map.getCell(i, j).getCrossingCost() < Integer.MAX_VALUE) {
+                    map.getCell(characterInGame.getCoordinataX(), characterInGame.getCoordinataY()).setOccupied(false);
+                    map.getCell(i, j).setOccupied(true);
+                    characterInGame.setCoordinataX(i);
+                    characterInGame.setCoordinataY(j);
+                    flag = false;
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean isInMoveMode() {
+        return moveMode;
+    }
+    
+    @Override
+    public void disableMoveMode() {
+        moveMode = false;
+    }
+    
+    @Override
+    public void enableMoveMode() {
+        moveMode = true;
+    }
+
+    @Override
+    public Pair<Integer, Integer>[] getCellsToMove() {
+        Pair<Integer, Integer>[] array = new Pair[cellsToMove.size()];
+      return cellsToMove.toArray(array);
+    }
+
+    @Override
+    public CharacterInGame getTurnCharacterInGame() {
+        return game.getCharactersInGame().get(turnNumber);
+    }
+
+    @Override
+    public boolean moveCharacterInGame(CharacterInGame characterInGame, int iTarget, int jTarget) {
+        boolean flag = false;
+        for(int i = 0; i < cellsToMove.size() && !flag; i++) {
+            Pair<Integer, Integer> cell = cellsToMove.get(i);
+            if(cell.getKey().intValue() == iTarget && cell.getValue().intValue() == jTarget) {
+                if(!game.getMap().getCell(iTarget, jTarget).isOccupied())  {
+                    game.getMap().getCell(characterInGame.getCoordinataX(), characterInGame.getCoordinataY()).setOccupied(false);
+                    characterInGame.setCoordinataX(iTarget);
+                    characterInGame.setCoordinataY(jTarget);
+                    game.getMap().getCell(iTarget, jTarget).setOccupied(true);
+                    flag = true;
+                }
+            }
+        }
+        return flag;
+    }
+
+    public ArrayList<CharacterInGame> characterTurnOrder(){
+
+        for (int i = 0; i < game.getCharactersInGame().size(); i++){
+            game.getCharactersInGame().get(i).setInitiative((int) (Math.random()*20 +1 + game.getCharactersInGame().get(i).getInitiativeModifier()));
+        }
+
+        Comparator<CharacterInGame> initiativeComparator = Comparator.comparing(CharacterInGame::getInitiative).reversed();
+
+        Collections.sort(game.getCharactersInGame(), initiativeComparator);
+        return game.getCharactersInGame();
     }
 }

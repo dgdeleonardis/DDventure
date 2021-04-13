@@ -289,11 +289,13 @@ public class CharacterCreationMenuView extends BorderPane {
         pfInsert.setText(Integer.toString(DDventureLogic.getInstance().getTempCharacter().getPF()));
         caInsert.setText(Integer.toString(DDventureLogic.getInstance().getTempCharacter().getCA()));
         speedInsert.setText(Integer.toString(DDventureLogic.getInstance().getTempCharacter().getSpeed()));
-        initiativeInsert.setText(Integer.toString(DDventureLogic.getInstance().getTempCharacter().getInitiative()));
+        initiativeInsert.setText(Integer.toString(DDventureLogic.getInstance().getTempCharacter().getInitiativeModifier()));
         //avatarComboBox.getSelectionModel().select();
         avatarComboBox.getSelectionModel().selectFirst();
         //weaponBox.getSelectionModel().select();
         weaponBox.getSelectionModel().selectFirst();
+        weaponDamageInsert.setText(Integer.toString(DDventureLogic.getInstance().getTempCharacter().getWeapon().getDamageDice()));
+        tcInsert.setText(Integer.toString(DDventureLogic.getInstance().getTempCharacter().getWeapon().getTpcModifier()));
     }
 
     private void createCharacterInGame() {

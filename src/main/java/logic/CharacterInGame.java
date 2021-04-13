@@ -5,6 +5,8 @@ public class CharacterInGame extends Character {
     private int coordinataX;
     private int coordinataY;
     private int turnOrder;
+    private int initiative;
+    private int initiativeModifier;
     private boolean hasAttacked;
 
     public CharacterInGame(String name, int pf, int ca, int speed, int initiative, String avatar, int coordinataX, int coordinataY, Weapon weapon, Team team) {
@@ -59,5 +61,18 @@ public class CharacterInGame extends Character {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public int getInitiative() {
+        return initiative;
+    }
+
+    @Override
+    public void setInitiative(int initiative) {
+        this.initiative = initiative;
     }
 }

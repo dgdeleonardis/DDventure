@@ -5,16 +5,16 @@ public class Character {
     protected Integer pf;
     protected Integer ca;
     protected Integer speed;
-    protected Integer initiative;
+    protected Integer initiativeModifier;
     protected String avatar;
     protected Weapon weapon;
 
-    public Character(String name, int pf, int ca, int speed, int initiative, String avatar, Weapon weapon) {
+    public Character(String name, int pf, int ca, int speed, int initiativeModifier, String avatar, Weapon weapon) {
         this.name = name;
         this.pf = pf;
         this.ca = ca;
         this.speed = speed;
-        this.initiative = initiative;
+        this.initiativeModifier = initiativeModifier;
         this.avatar = avatar;
         this.weapon = weapon;
     }
@@ -35,8 +35,12 @@ public class Character {
         return this.speed;
     }
 
-    public Integer getInitiative(){
-        return this.initiative;
+    public void setInitiative(int initiativeModifier) {
+        this.initiativeModifier = initiativeModifier;
+    }
+
+    public int getInitiativeModifier() {
+        return initiativeModifier;
     }
 
     public String getAvatar(){
