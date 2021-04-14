@@ -16,8 +16,10 @@ public class DDventureView implements IView{
     private static final String MAIN_BACKGROUND_FILE_NAME = "image/background-hell_gate.png";
     private static final String CREATION_GAME_BACKGROUND_FILE_NAME = "image/background-leather.jpg";
     public static final String FONT_FILE_NAME = "font/alagard.ttf";
-    public static final int PRIMARY_STAGE_WIDTH = 1280;
-    public static final int PRIMARY_STAGE_HEIGHT = 720;
+
+    static final int PRIMARY_STAGE_WIDTH = 1280;
+    static final int PRIMARY_STAGE_HEIGHT = 720;
+    static final double GAME_PANE_SPACING = 30;
 
     public static final HashMap<String, Color> TEAM_COLORS = new HashMap<String, Color>() {{
         put("Rosso", Color.RED);

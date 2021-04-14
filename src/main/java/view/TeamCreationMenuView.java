@@ -4,20 +4,20 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Callback;
 import logic.DDventureLogic;
 
 public class TeamCreationMenuView extends BorderPane {
 
-    // general attributes
     private static final int TITLE_FONT_SIZE = 64;
     private static final int BUTTON_FONT_SIZE = 24;
+    private final static int GENERIC_SPACING = 30;
+
     private static final String[] ITEM_NUMBER_OF_TEAM_BOX = {"2", "3", "4", "5", "6"};
 
     private Label errorLabel;
@@ -25,44 +25,56 @@ public class TeamCreationMenuView extends BorderPane {
     public TeamCreationMenuView() {
         super();
         setPrefSize(
-                DDventureView.PRIMARY_STAGE_WIDTH - (30*2),
-                DDventureView.PRIMARY_STAGE_HEIGHT - (30*2));
+                DDventureView.PRIMARY_STAGE_WIDTH - (DDventureView.GAME_PANE_SPACING*2),
+                DDventureView.PRIMARY_STAGE_HEIGHT - (DDventureView.GAME_PANE_SPACING*2)
+        );
 
-        // set top section
+        // top section
         Label titleLabel = new Label("Schieramenti");
         titleLabel.setFont(Font.font("Alagard", TITLE_FONT_SIZE));
-
         this.setTop(titleLabel);
         BorderPane.setAlignment(titleLabel, Pos.CENTER);
-        BorderPane.setMargin(titleLabel, new Insets(30));
+        BorderPane.setMargin(titleLabel, new Insets(GENERIC_SPACING));
 
-        // set of left section
+        // left section
         Font buttomFont = Font.font("Alagard", BUTTON_FONT_SIZE);
 
         Label numberOfTeamLabel = new Label("Numero di schieramenti");
         numberOfTeamLabel.setFont(buttomFont);
 
-        ChoiceBox<String> choiceNumberOfTeamBox = new ChoiceBox<>();
-        choiceNumberOfTeamBox.getItems().addAll(ITEM_NUMBER_OF_TEAM_BOX);
-        //FIXME: chiedere parere a Marta se applicare formattazione simile a TeamCreationItemView
+        ComboBox<String> numberOfTeamComboBox = new ComboBox<>();
+        numberOfTeamComboBox.getItems().addAll(ITEM_NUMBER_OF_TEAM_BOX);
+        numberOfTeamComboBox.setCellFactory(
+                new Callback<ListView<String>, ListCell<String>>() {
+                    @Override
+                    public ListCell<String> call(ListView<String> param) {
+                        return new ListCell<String>() {
+                            @Override
+                            protected void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                this.setFont(buttomFont);
+                            }
+                        };
+                    }
+                }
+        );
 
-        VBox leftBox = new VBox();
-        leftBox.setSpacing(50);
+        HBox teamHBox = new HBox(numberOfTeamLabel, numberOfTeamComboBox);
+        teamHBox.setSpacing(GENERIC_SPACING);
+
+        VBox leftBox = new VBox(teamHBox);
+        leftBox.setSpacing(GENERIC_SPACING);
         leftBox.setAlignment(Pos.CENTER);
-
-        HBox teamHBox = new HBox(numberOfTeamLabel, choiceNumberOfTeamBox);
-        teamHBox.setSpacing(30);
-        leftBox.getChildren().add(teamHBox);
         this.setLeft(leftBox);
         BorderPane.setAlignment(leftBox, Pos.TOP_CENTER);
-        BorderPane.setMargin(leftBox, new Insets(60));
+        BorderPane.setMargin(leftBox, new Insets(GENERIC_SPACING));
 
-        // set center section
+        // center section
         VBox teamCreationBox = new VBox();
         teamCreationBox.setAlignment(Pos.CENTER);
-        teamCreationBox.setSpacing(30);
+        teamCreationBox.setSpacing(GENERIC_SPACING);
         this.setCenter(teamCreationBox);
-        BorderPane.setAlignment(choiceNumberOfTeamBox, Pos.CENTER);
+        BorderPane.setAlignment(numberOfTeamComboBox, Pos.CENTER);
 
         //set bottom section
         AnchorPane bottomPane = new AnchorPane();
@@ -77,7 +89,7 @@ public class TeamCreationMenuView extends BorderPane {
         confirmButton.setOnAction( event -> {
             ObservableList<Node> teamCreationItems = teamCreationBox.getChildren();
             boolean flag = true;
-            for(int i = 0; i < teamCreationItems.size() && flag; i++) {
+            for(int i = 0; i < teamCreationItems.size(); i++) {
                 TeamCreationItemView item = (TeamCreationItemView) teamCreationItems.get(i);
                 flag = DDventureLogic.getInstance().createTeam(item.getTeamName(), item.getTeamColor());
             }
@@ -103,7 +115,7 @@ public class TeamCreationMenuView extends BorderPane {
 
         this.setBottom(bottomPane);
 
-        choiceNumberOfTeamBox.getSelectionModel().selectedItemProperty().addListener(
+        numberOfTeamComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     teamCreationBox.getChildren().clear();
                     int n = Integer.parseInt(newValue);

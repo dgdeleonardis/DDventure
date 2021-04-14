@@ -15,16 +15,16 @@ public class MainMenuView extends BorderPane  {
     private final static int BUTTOM_FONT_SIZE = 24;
     private final static int GENERIC_SPACING = 30;
     private final static double BUTTON_MIN_WIDTH = 320;
-    
+
     public MainMenuView() {
         super();
-        setPrefSize(DDventureView.PRIMARY_STAGE_WIDTH, DDventureView.PRIMARY_STAGE_HEIGHT);
+        this.setPrefSize(DDventureView.PRIMARY_STAGE_WIDTH, DDventureView.PRIMARY_STAGE_HEIGHT);
 
         //top section
         Label titleLabel = new Label("DDventure");
         titleLabel.setFont(Font.font("Alagard", TITLE_FONT_SIZE));
         titleLabel.setTextFill(Color.WHITE);
-        setTop(titleLabel);
+        this.setTop(titleLabel);
         BorderPane.setAlignment(titleLabel, Pos.CENTER);
         BorderPane.setMargin(titleLabel, new Insets(GENERIC_SPACING));
 
@@ -59,7 +59,7 @@ public class MainMenuView extends BorderPane  {
         optionbutton.setOnAction( event ->  {
             DDventureView.getInstance().createAnOpenOptionScene((Stage) getScene().getWindow());
         });
-        setBottom(optionbutton);
+        this.setBottom(optionbutton);
         BorderPane.setAlignment(optionbutton, Pos.CENTER);
         BorderPane.setMargin(optionbutton, new Insets(GENERIC_SPACING));
     }
