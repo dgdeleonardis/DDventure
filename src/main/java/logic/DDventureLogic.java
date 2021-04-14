@@ -43,15 +43,24 @@ public class DDventureLogic implements ILogic{
 
 
     @Override
-    public boolean createTeam(String teamName, String teamColor) {
-        for(int i = 0; i < game.getTeams().size(); i++) {
-            Team t = game.getTeams().get(i);
-            if(teamName.equals(t.getName()) || teamColor.equals(t.getColor())) {
-                return false;
-            }
+    public boolean createTeam(String teamName, String teamColorName) {
+        if(!this.teamNameExists(teamName) && !this.teamColorPicked(teamColorName)) {
+            //FIXME: non rispetta Demetra
+            game.getTeams().add(new Team(teamName, teamColorName));
+            return true;
+        } else {
+            return false;
         }
-        game.getTeams().add(new Team(teamName, teamColor));
-        return true;
+    }
+
+    public boolean teamNameExists(String teamName) {
+        ArrayList<Team> teams = game.getTeams();
+        return teams.stream().anyMatch(team -> team.getName().equals(teamName));
+    }
+
+    public boolean teamColorPicked(String teamColorName) {
+        ArrayList<Team> teams = game.getTeams();
+        return teams.stream().anyMatch(team -> team.getColor().equals(teamColorName));
     }
 
     @Override
@@ -316,5 +325,10 @@ public class DDventureLogic implements ILogic{
 
         Collections.sort(game.getCharactersInGame(), initiativeComparator);
         return game.getCharactersInGame();
+    }
+
+    @Override
+    public void resetTeams() {
+        game.getTeams().clear();
     }
 }
