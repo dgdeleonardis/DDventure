@@ -9,7 +9,6 @@ import javafx.scene.layout.*;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.util.Callback;
 import logic.DDventureLogic;
 
 public class TeamCreationMenuView extends BorderPane {
@@ -17,40 +16,28 @@ public class TeamCreationMenuView extends BorderPane {
     private static final int TITLE_FONT_SIZE = 64;
     private static final int BUTTON_FONT_SIZE = 24;
     private static final int COMBO_BOX_FONT_SIZE = 16;
-    private final static int GENERIC_SPACING = 30;
+    private final static int GENERIC_SPACING = 40;
+    private final static double CHOICE_BOX_MIN_WIDTH = 120;
 
     private static final String[] ITEM_NUMBER_OF_TEAM_BOX = {"2", "3", "4", "5", "6"};
 
     private class TeamCreationItemView extends HBox {
 
         private final TextField teamNameText;
-        private final ComboBox<String> teamColorComboBox;
+        private final ChoiceBox<String> teamColorChoiceBox;
 
         public TeamCreationItemView() {
             super();
-            Font textFont = Font.loadFont("Alagard", BUTTON_FONT_SIZE);
 
             teamNameText = new TextField("Nome schieramento");
-            teamNameText.setFont(textFont);
+            teamNameText.setFont(Font.font("Alagard", BUTTON_FONT_SIZE));
 
-            teamColorComboBox = new ComboBox<>();
-            teamColorComboBox.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-                @Override
-                public ListCell<String> call(ListView<String> param) {
-                    return new ListCell<String>() {
+            teamColorChoiceBox = new ChoiceBox<>();
+            teamColorChoiceBox.setMinWidth(CHOICE_BOX_MIN_WIDTH);
+            teamColorChoiceBox.setStyle("-fx-font: " + COMBO_BOX_FONT_SIZE +" \"Alagard\"");
+            teamColorChoiceBox.getItems().addAll(DDventureView.TEAM_COLORS.keySet());
 
-                        @Override
-                        protected void updateItem(String item, boolean empty) {
-                            super.updateItem(item, empty);
-                            setFont(Font.font("Alagard", COMBO_BOX_FONT_SIZE));
-                        }
-                    };
-                }
-            });
-
-            teamColorComboBox.getItems().addAll(DDventureView.TEAM_COLORS.keySet());
-
-            this.getChildren().addAll(teamNameText, teamColorComboBox);
+            this.getChildren().addAll(teamNameText, teamColorChoiceBox);
             this.setSpacing(GENERIC_SPACING);
             this.setAlignment(Pos.CENTER);
         }
@@ -76,27 +63,14 @@ public class TeamCreationMenuView extends BorderPane {
         Label numberOfTeamLabel = new Label("Numero di schieramenti");
         numberOfTeamLabel.setFont(buttomFont);
 
-        ComboBox<String> numberOfTeamComboBox = new ComboBox<>();
-        numberOfTeamComboBox.getItems().addAll(ITEM_NUMBER_OF_TEAM_BOX);
-        numberOfTeamComboBox.setCellFactory(
-                new Callback<ListView<String>, ListCell<String>>() {
-                    @Override
-                    public ListCell<String> call(ListView<String> param) {
-                        return new ListCell<String>() {
-                            @Override
-                            protected void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                this.setFont(buttomFont);
-                            }
-                        };
-                    }
-                }
-        );
+        ChoiceBox<String> numberOfTeamChoiceBox = new ChoiceBox<>();
+        numberOfTeamChoiceBox.getItems().addAll(ITEM_NUMBER_OF_TEAM_BOX);
+        numberOfTeamChoiceBox.setStyle("-fx-font: " + COMBO_BOX_FONT_SIZE +" \"Alagard\"");
 
-        HBox teamHBox = new HBox(numberOfTeamLabel, numberOfTeamComboBox);
+        HBox teamHBox = new HBox(numberOfTeamLabel, numberOfTeamChoiceBox);
         teamHBox.setSpacing(GENERIC_SPACING);
 
-        Label errorLabel = new Label("Errore: due o piu' team presentano\\nlo stesso nome o colore");
+        Label errorLabel = new Label("Errore: due o piu' team presentano\nlo stesso nome o colore");
         errorLabel.setFont(buttomFont);
         errorLabel.setTextFill(Color.RED);
         errorLabel.setVisible(false);
@@ -112,7 +86,7 @@ public class TeamCreationMenuView extends BorderPane {
         VBox teamCreationBox = new VBox();
         teamCreationBox.setAlignment(Pos.CENTER);
         teamCreationBox.setSpacing(GENERIC_SPACING);
-        numberOfTeamComboBox.getSelectionModel().selectedItemProperty().addListener(
+        numberOfTeamChoiceBox.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     teamCreationBox.getChildren().clear();
                     int n = Integer.parseInt(newValue);
@@ -120,10 +94,10 @@ public class TeamCreationMenuView extends BorderPane {
                         teamCreationBox.getChildren().add(new TeamCreationItemView());
                     }
                 });
-        numberOfTeamComboBox.getSelectionModel().selectFirst();
+        numberOfTeamChoiceBox.getSelectionModel().selectFirst();
 
         this.setCenter(teamCreationBox);
-        BorderPane.setAlignment(numberOfTeamComboBox, Pos.CENTER);
+        BorderPane.setAlignment(numberOfTeamChoiceBox, Pos.CENTER);
 
         //set bottom section
         Button backToMenuButton = new Button("Indietro");
@@ -135,21 +109,20 @@ public class TeamCreationMenuView extends BorderPane {
 
         Button confirmButton = new Button("Avanti");
         confirmButton.setFont(buttomFont);
-        confirmButton.setDisable(true);
         confirmButton.setOnAction(event -> {
             ObservableList<Node> teamCreationItems = teamCreationBox.getChildren();
             boolean result = true;
             for (int i = 0; i < teamCreationItems.size() && result; i++) {
                 TeamCreationItemView item = (TeamCreationItemView) teamCreationItems.get(i);
                 String teamName = item.teamNameText.getText();
-                String teamColorName = item.teamColorComboBox.getValue();
+                String teamColorName = item.teamColorChoiceBox.getValue();
 
                 result = DDventureLogic.getInstance().createTeam(teamName, teamColorName);
             }
             if (result) {
-                DDventureLogic.getInstance().resetTeams();
                 DDventureView.getInstance().createAnOpenPlayerScene();
             } else {
+                DDventureLogic.getInstance().resetTeams();
                 errorLabel.setVisible(true);
             }
         });

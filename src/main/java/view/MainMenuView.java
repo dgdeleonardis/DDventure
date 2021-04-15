@@ -33,7 +33,7 @@ public class MainMenuView extends BorderPane  {
 
         Button startGameButton = new Button("Nuova partita");
         startGameButton.setFont(buttonFont);
-        startGameButton.setMinWidth(GENERIC_SPACING);
+        startGameButton.setMinWidth(BUTTON_MIN_WIDTH);
         startGameButton.setOnAction(event -> {
             DDventureView.getInstance().createAnOpenTeamScene();
         });
