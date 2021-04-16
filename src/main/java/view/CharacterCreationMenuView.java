@@ -19,29 +19,23 @@ import java.util.HashMap;
 
 public class CharacterCreationMenuView extends BorderPane {
 
-    public static final String AVATAR_DIRECTORY_RELATIVE_PATH = "image/avatar/";
+    public static final String AVATAR_DIRECTORY_RELATIVE_PATH = "image/mugshoot/";
 
     private static final HashMap<String, String> SPRITE_MAP = new HashMap<String, String>() {{
-        put("Bandito", "Banditsheetver4.png");
-        put("Cavaliere 1", "Cavalire brother1.png");
-        put("Cavaliere 2", "cavalire brother2.png");
-        put("Bandito delle caverne", "CaveBanditversheet.png");
-        put("Primo ministro", "Corrupt prim ministerversheet.png");
-        put("Maga", "Dark Magesheet.png");
-        put("Guardia del re", "Enemy Guardver3.png");
-        put("Lord 1", "Enemy Lordsheet3ver2.png");
-        put("Lord 2", "Enemy Lordsheetnormver2.png");
-        put("Mago", "Enemy Mageversheet.png");
-        put("Bandita", "erika sonsheetver5.png");
-        put("Guardia del capitano", "Guard Captain Enemysheet.png");
-        put("Mago apprendista", "Light Mage.png");
-        put("Stregone 1", "Lyon HoodOlderver3.png");
-        put("Stregone 2", "Lyon HoodOlderver4no hood.png");
-        put("Soldato semplice 1", "pegasus brother.png");
-        put("Soldato semplice 1 (f.)", "pegasus sister1 sheetver2.png");
-        put("Soldato semplice 2 (f.)", "pegasus sister2.png");
-        put("Soldato semplice 2", "soldierver3Aran.png");
-        put("Barbaro", "Tribe leader sheet.png");
+        put("Arcer (M)", "Arcer.png");
+        put("Arcer (F)", "Rebecca.png");
+        put("Assassin (M)", "Assassin.png");
+        put("Assassin (F)", "Assassina.png");
+        put("Ax (M)", "Hector.png");
+        put("Ax (F)", "Asciafem.png");
+        put("Mage (M)", "Athos.png");
+        put("Mage (F)", "Maga.png");
+        put("Dark Mage(M)", "MagoOscuro.png");
+        put("Dark Mage (F)", "MagaOscura.png");
+        put("Knight (M)", "Cavalierone.png");
+        put("Knight (F)", "Cavaliera.png");
+        put("Swordman (M)", "Eliwood.png");
+        put("Swodman (F)", "Lyn.png");
     }};
     // end section
 

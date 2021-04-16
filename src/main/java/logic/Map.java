@@ -69,8 +69,8 @@ public class Map {
             }
             characterInGame.setCoordinataX(iTarget);
             characterInGame.setCoordinataY(jTarget);
-            cells[iSource][jSource].setOccupied(false);
-            cells[iTarget][jTarget].setOccupied(true);
+            cells[iSource][jSource].setCharacterOnCell(null);
+            cells[iTarget][jTarget].setCharacterOnCell(characterInGame);
             selectionMode = false;
         }
         return !selectionMode;

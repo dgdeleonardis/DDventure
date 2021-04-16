@@ -129,6 +129,43 @@ public class GameScene extends BorderPane {
 
         HBox buttons = new HBox(this.attackButton, this.moveButton);
         buttons.setSpacing(15);
+        attackButton.setOnAction( event -> {
+
+            if(!DDventureLogic.getInstance().getTurnCharacterInGame().isHasAttacked()) {
+
+            }
+
+            /*
+
+                 TODO-V2:
+                     !onAction di attackButton!
+                        [LOGIC] getTurnCharacter().hasAttacked() ?
+                            true:
+                            false:
+                                [LOGIC] determinaLeCoordinateDiQualeCellaAdiacenteAlPersonaggioPresentaNemici() return -> Elenco di celle in cui ci sono i nemici
+                                [VIEW] illuminaCelleAdiacentiConNemici(elenco di celle trovato in precedenza)
+                   !onClicked di map!
+                        [LOGIC] stoAttaccando() ?
+                                true:
+                                    [VIEW] determino le coordinate matriciali della cella
+                                    [LOGIC] verificare se la cella selezionata rientra nelle celle in cui è possibile attaccare
+                                        true:
+                                            [LOGIC] determinare qual è il nemico da attaccare
+                                            [LOGIC] provaARompereLaDifesa() return int [lancia il dado]
+                                            [VIEW] avvia l'animazione e mostra a schermo il risultato
+                                                WARNING: DUE POSSIBILI IMPLEMENTAZIONI:
+                                                       A. risultato deciso a priori con model
+                                                       B. pulsante start&stop
+                                            [LOGIC] èStataRotta()?
+                                                true:
+                                                    [VIEW] avvia animazione attacco
+                                                    [LOGIC] ottengo risultato dado danno da funzione del logic
+
+                                                false: [VIEW] zio, sei uno sfigato e ciccia.
+
+                                                [LOGIC] imposta a true l'attributo hasAttacked
+             */
+        });
 
         VBox rsection = new VBox(stack, buttons);
         rsection.setSpacing(60);

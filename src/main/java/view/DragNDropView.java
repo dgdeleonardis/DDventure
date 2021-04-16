@@ -7,14 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
-import javafx.util.Pair;
 import logic.CharacterInGame;
 import logic.DDventureLogic;
 import logic.Weapon;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 
 public class DragNDropView extends BorderPane {
@@ -54,7 +51,7 @@ public class DragNDropView extends BorderPane {
         characterInGame.add(new CharacterInGame("diego", 4, 4, 5, 6, "", 5, 0, new Weapon("", 4, 5), DDventureLogic.getInstance().getGame().getTeams().get(0)));
         DDventureLogic.getInstance().generateRandomPositions();
         characterInGame.forEach(character -> {
-            DDventureLogic.getInstance().getGameMap().getCells()[character.getCoordinataX()][character.getCoordinataY()].setOccupied(true);
+            DDventureLogic.getInstance().getGameMap().getCells()[character.getCoordinataX()][character.getCoordinataY()].setCharacterOnCell(character);
         });
 
         // center section

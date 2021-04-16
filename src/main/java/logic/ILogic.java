@@ -56,4 +56,6 @@ public interface ILogic {
     boolean moveCharacterInGame(CharacterInGame characterInGame, int iTarget, int jTarget);
 
     ArrayList<CharacterInGame> characterTurnOrder();
+
+    Pair<Integer, Integer>[] getCellsToAttack();
 }

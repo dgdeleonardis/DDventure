@@ -13,10 +13,31 @@ public class DDventureLogic implements ILogic{
     private Game game;
     private Map tempMap;
     private Character tempCharacter;
+    private XMLSpriteManager xmlSpriteManager;
+    private static final String SPRITE_XML_FILE_NAME = "image/animation.xml";
 
     private boolean moveMode;
     private ArrayList<Pair<Integer, Integer>> cellsToMove;
     private int turnNumber;
+
+    private boolean attackMode;
+    private ArrayList<Pair<Integer, Integer>> cellsToAttack;
+
+
+
+    private final static Weapon[] DEFAULT_WEAPONS = {
+            new Weapon("Spada", 8, 2),
+            new Weapon("Lancia", 6, 1),
+            new Weapon("Pugnale", 4, 3),
+            new Weapon("Ascia", 6, 1),
+            new Weapon("Magia bianca", 10, 1),
+            new Weapon("Magia oscura", 8, 3)
+    };
+
+    //private final static HashMap<String, String> WEAPONS_MUGSHOOT = new HashMap<>() {{
+        // bla bla bla
+    //}};;
+
 
     private final static int DEFAULT_COLUMNS = 16;
     private final static int DEFAULT_ROWS = 9;
@@ -30,8 +51,10 @@ public class DDventureLogic implements ILogic{
             new File(gameDirectory.getAbsolutePath() + "/saved_map").mkdir();
             new File(gameDirectory.getAbsolutePath() + "/saved_character").mkdir();
         }
+        xmlSpriteManager = new XMLSpriteManager(SPRITE_XML_FILE_NAME);
         game = new Game();
         moveMode = false;
+        attackMode = false;
         turnNumber = 0;
     }
 
@@ -252,8 +275,8 @@ public class DDventureLogic implements ILogic{
                 int i = (int) Math.floor(Math.random()*map.getColumns());
                 int j = (int) Math.floor(Math.random()*map.getRows());
                 if(!map.getCell(i, j).isOccupied() && map.getCell(i, j).getCrossingCost() < Integer.MAX_VALUE) {
-                    map.getCell(characterInGame.getCoordinataX(), characterInGame.getCoordinataY()).setOccupied(false);
-                    map.getCell(i, j).setOccupied(true);
+                    map.getCell(characterInGame.getCoordinataX(), characterInGame.getCoordinataY()).setCharacterOnCell(null);
+                    map.getCell(i, j).setCharacterOnCell(characterInGame);
                     characterInGame.setCoordinataX(i);
                     characterInGame.setCoordinataY(j);
                     flag = false;
@@ -295,10 +318,10 @@ public class DDventureLogic implements ILogic{
             Pair<Integer, Integer> cell = cellsToMove.get(i);
             if(cell.getKey().intValue() == iTarget && cell.getValue().intValue() == jTarget) {
                 if(!game.getMap().getCell(iTarget, jTarget).isOccupied())  {
-                    game.getMap().getCell(characterInGame.getCoordinataX(), characterInGame.getCoordinataY()).setOccupied(false);
+                    game.getMap().getCell(characterInGame.getCoordinataX(), characterInGame.getCoordinataY()).setCharacterOnCell(null);
                     characterInGame.setCoordinataX(iTarget);
                     characterInGame.setCoordinataY(jTarget);
-                    game.getMap().getCell(iTarget, jTarget).setOccupied(true);
+                    game.getMap().getCell(iTarget, jTarget).setCharacterOnCell(characterInGame);
                     flag = true;
                 }
             }
@@ -317,4 +340,36 @@ public class DDventureLogic implements ILogic{
         Collections.sort(game.getCharactersInGame(), initiativeComparator);
         return game.getCharactersInGame();
     }
+
+    @Override
+    public Pair<Integer, Integer>[] getCellsToAttack() {
+        int iSource = this.getTurnCharacterInGame().getCoordinataX();
+        int jSource = this.getTurnCharacterInGame().getCoordinataY();
+        Team team = this.getTurnCharacterInGame().getTeam();
+        cellsToAttack = new ArrayList<>();
+        // up
+        if(isCellToAttack(team, iSource, jSource - 1))
+            cellsToAttack.add(new Pair<>(iSource, jSource - 1));
+        if(isCellToAttack(team, iSource, jSource + 1))
+            cellsToAttack.add(new Pair<>(iSource, jSource + 1));
+        if(isCellToAttack(team, iSource - 1, jSource))
+            cellsToAttack.add(new Pair<>(iSource - 1, jSource));
+        if(isCellToAttack(team, iSource + 1, jSource))
+            cellsToAttack.add(new Pair<>(iSource + 1, jSource));
+        Pair<Integer, Integer>[] cellsToAttackArray = new Pair[cellsToAttack.size()];
+        return cellsToAttack.toArray(cellsToAttackArray);
+    }
+
+    private boolean isCellToAttack(Team team, int i, int j) {
+        Map map = game.getMap();
+        if(i < map.getColumns() && j < map.getRows()) {
+            if(map.getCell(i, j).isOccupied()) {
+                if(!map.getCell(i, j).getCharacterOnCell().getTeam().equals(team)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }
