@@ -22,7 +22,7 @@ public class OptionMenuView extends BorderPane {
         } else {
             setPrefSize(800, 600);
         }
-        Font buttonFont = Font.font("Alagard", BUTTON_FONT_SIZE);
+
 
         // set top section
         Label titleLabel = new Label("Opzioni");
@@ -37,6 +37,8 @@ public class OptionMenuView extends BorderPane {
         VBox centerBox = new VBox();
         centerBox.setSpacing(30);
         centerBox.setAlignment(Pos.CENTER);
+
+        Font buttonFont = Font.font("Alagard", BUTTON_FONT_SIZE);
 
         Button musicButton = new Button("Musica: " + (DDventureView.getInstance().getMusicManager().isPlaying() ? "On" : "Off"));
         musicButton.setFont(buttonFont);

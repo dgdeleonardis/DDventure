@@ -175,7 +175,7 @@ public class CharacterCreationMenuView extends BorderPane {
 
         //right section - new code
         this.spriteView = new ImageView();
-        
+
 
         String[] avatarNames = new String[SPRITE_MAP.size()];
         SPRITE_MAP.keySet().toArray(avatarNames);
