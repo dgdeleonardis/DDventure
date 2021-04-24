@@ -19,4 +19,24 @@ public class CharacterSprite {
         this.stance = stance;
         this.actions = actions;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSheetFileName() {
+        return sheetFileName;
+    }
+
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public Rectangle2D getStance() {
+        return stance;
+    }
+
+    public ArrayList<Action> getActions() {
+        return actions;
+    }
 }

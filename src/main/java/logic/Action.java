@@ -17,4 +17,7 @@ public class Action {
         return name;
     }
 
+    public ArrayList<Rectangle2D> getFrames() {
+        return frames;
+    }
 }

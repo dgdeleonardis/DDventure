@@ -1,5 +1,8 @@
 package view;
 
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.LoadException;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -9,7 +12,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 public class DDventureView implements IView{
 
@@ -37,9 +43,7 @@ public class DDventureView implements IView{
     private Scene mainScene;
     private AnchorPane creationGamePane;
 
-    private Scene initiativeScene;
     private Scene pauseScene;
-    private Scene victoryScene;
 
     private final BackgroundImage mainBackgroundImage;
     private final BackgroundImage creationGameBackgroundImage;
@@ -90,7 +94,7 @@ public class DDventureView implements IView{
     }
 
     @Override
-    public void createAnOpenMainMenuScene() {
+    public void createAnOpenMainMenuScene () {
         AnchorPane backgroundPane;
         if(mainScene == null) {
             backgroundPane = new AnchorPane();
@@ -101,9 +105,30 @@ public class DDventureView implements IView{
             backgroundPane = (AnchorPane) mainScene.getRoot();
         }
         backgroundPane.getChildren().clear();
-        MainMenu mainMenu = new MainMenu();
+        MainMenuView mainMenu = new MainMenuView();
         backgroundPane.getChildren().add(mainMenu);
         centerPanel(mainMenu, 0);
+    }
+
+
+
+    private Parent getRootPane() {
+        Parent rootPane = null;
+        if(mainScene == null) {
+            try {
+                ResourceBundle resourceBundle = ResourceBundle.getBundle("strings");
+                rootPane = FXMLLoader.load(
+                        this.getClass().getResource(DDventureViewConstants.ROOT_PANE_FXML_FILE_NAME),
+                        resourceBundle);
+                mainScene = new Scene(rootPane);
+                primaryStage.setScene(mainScene);
+            } catch(IOException ioe) {
+                ioe.printStackTrace();
+            }
+        } else {
+            rootPane = mainScene.getRoot();
+        }
+        return rootPane;
     }
 
     @Override
@@ -223,7 +248,12 @@ public class DDventureView implements IView{
 
     @Override
     public void createAnOpenVictoryStage() {
-
+        if(creationGamePane != null) {
+            creationGamePane.getChildren().clear();
+            WinnerView winnerView = new WinnerView();
+            creationGamePane.getChildren().add(winnerView);
+            centerPanel(winnerView, 0);
+        }
     }
 
     @Override

@@ -7,13 +7,11 @@ public class Team {
     private final String name;
     private final String color;
     private ArrayList<CharacterInGame> members;
-    private boolean isInGame;
 
     public Team(String name, String color) {
         this.name = name;
         this.color = color;
         members = new ArrayList<CharacterInGame>();
-        isInGame = true;
     }
 
     public String getName() {
@@ -24,15 +22,24 @@ public class Team {
         return color;
     }
 
-    public void setInGame(boolean inGame) {
-        isInGame = inGame;
-    }
-
     public void addToTeam(CharacterInGame player) {
         members.add(player);
     }
 
     public CharacterInGame[] getMembers() {
-        return (CharacterInGame[]) members.toArray();
+        CharacterInGame[] arr = new CharacterInGame[members.size()];
+        return members.toArray(arr);
+    }
+
+    public boolean isInGame() {
+        int i = 0;
+        while(i < members.size() && !members.get(i).isDead()) {
+            i++;
+        }
+        if(i < members.size() || members.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

@@ -97,20 +97,28 @@ public class MapView extends Canvas {
                 getHeight()/mapRows);
     }
 
-    public void highlightCellsToMoveTo(Pair<Integer, Integer>[] cellsToMove, Color characterTeamColor) {
+    public void highlightCells(Pair<Integer, Integer>[] cellsToHighlight, Color fillColor) {
         Map map = DDventureLogic.getInstance().getGameMap();
         GraphicsContext gc = getGraphicsContext2D();
         int columns = map.getColumns();
         int rows = map.getRows();
-        //System.out.println(characterTeamColor.getRed() + " " + characterTeamColor.getGreen() + " " + characterTeamColor.getBlue());
 
-        gc.setFill(Color.rgb((int) (characterTeamColor.getRed()* 255), (int) (characterTeamColor.getGreen()* 255), (int) (characterTeamColor.getBlue() * 255), 0.4));
-        for (Pair<Integer, Integer> cell: cellsToMove) {
-        //  gc.strokeRect(getWidth()/columns*cell.getKey().intValue(), getHeight()/rows*cell.getValue().intValue(), getWidth()/columns, getHeight()/rows);
+        gc.setFill(Color.rgb((int) (fillColor.getRed()* 255), (int) (fillColor.getGreen()* 255), (int) (fillColor.getBlue() * 255), 0.4));
+        for (Pair<Integer, Integer> cell: cellsToHighlight) {
             gc.fillRect(getWidth()/columns*cell.getKey().intValue(), getHeight()/rows*cell.getValue().intValue(), getWidth()/columns, getHeight()/rows);
         }
         drawCharactersInGame();
-
     }
 
+    public void highlightCells(Pair<Integer, Integer> cell, Color fillColor) {
+        Map map = DDventureLogic.getInstance().getGameMap();
+        GraphicsContext gc = getGraphicsContext2D();
+        int columns = map.getColumns();
+        int rows = map.getRows();
+
+        gc.setFill(Color.rgb((int) (fillColor.getRed()* 255), (int) (fillColor.getGreen()* 255), (int) (fillColor.getBlue() * 255), 0.4));
+        gc.fillRect(getWidth()/columns*cell.getKey().intValue(), getHeight()/rows*cell.getValue().intValue(), getWidth()/columns, getHeight()/rows);
+
+        drawCharactersInGame();
+    }
 }

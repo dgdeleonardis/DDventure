@@ -58,4 +58,30 @@ public interface ILogic {
     ArrayList<CharacterInGame> characterTurnOrder();
 
     Pair<Integer, Integer>[] getCellsToAttack();
+
+    void setAttackMode(boolean attackMode);
+
+    boolean isInAttackMode();
+
+    boolean isAttackable(Pair<Integer, Integer> selectedCell);
+
+    String getCharacterName(int i);
+
+    public void resetCharacter(int i);
+
+    boolean isCABreak(int result);
+
+    CharacterSprite getTurnCharacterInGameSprite();
+
+    void damageControll(int damage);
+
+    boolean isEnemyDead();
+
+    public boolean isThereAWinner();
+
+    String getWinnerTeamName();
+
+    String[] getWinnerTeamMembers();
+
+    void resetGame();
 }

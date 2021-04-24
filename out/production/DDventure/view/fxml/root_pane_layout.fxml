@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.layout.*?>
+
+<?import view.DDventureViewConstants?>
+<?import java.net.URL?>
+<AnchorPane fx:id="backgroundPane"
+        xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml">
+    <prefWidth>
+        <DDventureViewConstants fx:constant="MAIN_STAGE_WIDTH"/>
+    </prefWidth>
+    <prefHeight>
+        <DDventureViewConstants fx:constant="MAIN_STAGE_HEIGHT"/>
+    </prefHeight>
+    <stylesheets>
+        <URL value="style.css"/>
+    </stylesheets>
+
+
+</AnchorPane>

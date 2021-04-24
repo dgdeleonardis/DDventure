@@ -21,7 +21,7 @@ public class XMLSpriteManager {
         try {
             dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             DocumentBuilder db = dbf.newDocumentBuilder();
-            doc = db.parse(new File(xmlFileName));
+            doc = db.parse(this.getClass().getResourceAsStream(xmlFileName));
         } catch(ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
             doc = null;

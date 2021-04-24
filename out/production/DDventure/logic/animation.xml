@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <characterset>
-    <character name="Eliwood (Lord)"
+    <character name="Swordman (M)"
                sheet="eliwood_lord.png"
                backgroundColor="9dbb61">
         <stance>
@@ -188,7 +188,7 @@
 
         </action>
     </character>
-    <character name="Bionda Cicatrice"
+    <character name="Ax (F)"
                sheet="bionda_cicatrice.gif"
                backgroundColor="0">
         <stance>
@@ -327,7 +327,7 @@
                    height="70"/>
         </action>
     </character>
-    <character name="Druido"
+    <character name="Dark Mage(M)"
                sheet="dark_druid.gif"
                backgroundColor="0">
         <stance>
@@ -431,7 +431,7 @@
                    height="55"/>
         </action>
     </character>
-    <character name="Leila"
+    <character name="Assassin (F)"
                sheet="leila.gif"
                backgroundColor="0">
         <stance>
@@ -555,7 +555,7 @@
                    height="42"/>
         </action>
     </character>
-    <character name="Heavy Knight"
+    <character name="Knight (M)"
                sheet="heavy_knight.gif"
                backgroundColor="">
         <stance>
@@ -727,7 +727,7 @@
                    height="60"/>
         </action>
     </character>
-    <character name="Jaffar"
+    <character name="Assassin (M)"
                sheet="jaffar.gif"
                backgroundColor="">
         <stance>
@@ -910,7 +910,6 @@
             <!-- fifth row -->
         </action>
     </character>
-
 </characterset>
 
 

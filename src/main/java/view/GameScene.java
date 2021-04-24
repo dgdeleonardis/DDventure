@@ -2,7 +2,6 @@ package view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -13,7 +12,12 @@ import javafx.scene.text.Font;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.util.Pair;
+import logic.Cell;
+import logic.CharacterInGame;
 import logic.DDventureLogic;
+
+import java.util.ArrayList;
 
 public class GameScene extends BorderPane {
 
@@ -33,6 +37,7 @@ public class GameScene extends BorderPane {
     private Circle circle;
     private Button attackButton;
     private Button moveButton;
+    int indexCurrentPlayer = 0;
 
     public GameScene(){
         super();
@@ -42,6 +47,9 @@ public class GameScene extends BorderPane {
         this.autosize();
         javafx.scene.text.Font textFont = Font.font("Alagard", 24);
 
+        this.map = new MapView(MAP_WIDHT, MAP_HEIGHT);
+        AnimationPane animationPane = new AnimationPane(map);
+
         //top
         this.pauseButton = new Button("Pausa");
         this.pauseButton.setFont(textFont);
@@ -49,6 +57,23 @@ public class GameScene extends BorderPane {
         this.turnLabel.setFont(textFont);
         this.endTurnButton = new Button("Concludi il turno");
         this.endTurnButton.setFont(textFont);
+        ArrayList<CharacterInGame> prova = DDventureLogic.getInstance().characterTurnOrder();
+        this.endTurnButton.setOnAction(event -> {
+            if(DDventureLogic.getInstance().isThereAWinner()) {
+                DDventureView.getInstance().createAnOpenVictoryStage();
+            } else {
+                animationPane.clearView();
+                DDventureLogic.getInstance().resetCharacter(indexCurrentPlayer);
+                indexCurrentPlayer = (indexCurrentPlayer +1) % prova.size();
+                //System.out.println(((indexCurrentPlayer-1)%prova.size()));
+                this.turnLabel.setText(DDventureLogic.getInstance().getCharacterName((indexCurrentPlayer-1+prova.size())% prova.size()) +
+                        " -> "+ DDventureLogic.getInstance().getCharacterName(indexCurrentPlayer % prova.size()) +
+                        " -> "+ DDventureLogic.getInstance().getCharacterName((indexCurrentPlayer+1)% prova.size())
+                );
+                animationPane.clearView();
+            }
+
+        });
 
         HBox topSection = new HBox(this.pauseButton, this.turnLabel, this.endTurnButton);
         topSection.setSpacing(220);
@@ -58,11 +83,12 @@ public class GameScene extends BorderPane {
         BorderPane.setAlignment(topSection, Pos.CENTER);
 
         //left
-        this.map = new MapView(MAP_WIDHT, MAP_HEIGHT);
+
         this.map.drawMap(DDventureLogic.getInstance().getGameMap());
         map.drawCharactersInGame();
         setLeft(this.map);
         BorderPane.setMargin(this.map, new Insets(50, 0, 0, 70));
+
 
         //right
         this.circle = new Circle();
@@ -71,6 +97,9 @@ public class GameScene extends BorderPane {
         this.circle.setFill(Color.TRANSPARENT);
         this.animation = new ImageView();
         StackPane stack = new StackPane(this.animation, this.circle);
+
+
+
 
 
         this.attackButton = new Button("Attacca");
@@ -89,7 +118,7 @@ public class GameScene extends BorderPane {
             if(!DDventureLogic.getInstance().isInMoveMode()) {
                 DDventureLogic.getInstance().enableMoveMode();
                 DDventureLogic.getInstance().searchCellsToMove(DDventureLogic.getInstance().getTurnCharacterInGame());
-                map.highlightCellsToMoveTo(DDventureLogic.getInstance().getCellsToMove(),
+                map.highlightCells(DDventureLogic.getInstance().getCellsToMove(),
                         DDventureView.TEAM_COLORS.get(DDventureLogic.getInstance().getTurnCharacterInGame().getTeam().getColor()));
             } else {
                 DDventureLogic.getInstance().disableMoveMode();
@@ -99,15 +128,9 @@ public class GameScene extends BorderPane {
         });
 
         map.setOnMouseClicked(event -> {
-            /*
-            TODO:
-                0. understand which characterInGame have to move
-                1. verify if character is in moveMode [LOGIC] (done)
-                    1.a move the characterInGame
-                    1.b re-draw the map
-                2. else do nothing
-             */
-            boolean flag = true;
+            System.out.println("X: " + event.getX() + " Y: " + event.getY());
+            System.out.println(DDventureLogic.getInstance().isInAttackMode());
+            boolean flag;
             if(DDventureLogic.getInstance().isInMoveMode()) {
                 int iTarget = (int) (event.getX()/(map.getWidth()/DDventureLogic.getInstance().getGameMap().getColumns()));
                 int jTarget = (int) (event.getY()/(map.getHeight()/DDventureLogic.getInstance().getGameMap().getRows()));
@@ -120,54 +143,48 @@ public class GameScene extends BorderPane {
                     map.drawMap(DDventureLogic.getInstance().getGameMap());
                     map.drawCharactersInGame();
                 }
-
-
             }
-
-
+            System.out.println(DDventureLogic.getInstance().isInAttackMode());
+            if(DDventureLogic.getInstance().isInAttackMode()) {
+                System.out.println(DDventureLogic.getInstance().isInAttackMode() + " sono entrato yuppie!");
+                // determino le coordinate matriciali della cella
+                int i = (int) (event.getX() / (map.getWidth()/DDventureLogic.getInstance().getGameMap().getColumns()));
+                int j = (int) (event.getY() / (map.getHeight()/DDventureLogic.getInstance().getGameMap().getRows()));
+                if(DDventureLogic.getInstance().isAttackable(new Pair<>(i, j))) {
+                    animationPane.openRollDiceAnimation();
+                }
+            } else {
+            }
         });
 
         HBox buttons = new HBox(this.attackButton, this.moveButton);
         buttons.setSpacing(15);
         attackButton.setOnAction( event -> {
-
             if(!DDventureLogic.getInstance().getTurnCharacterInGame().isHasAttacked()) {
-
+                if(DDventureLogic.getInstance().isInAttackMode()) {
+                    DDventureLogic.getInstance().setAttackMode(false);
+                    map.drawMap(DDventureLogic.getInstance().getGameMap());
+                    map.drawCharactersInGame();
+                } else {
+                    //map.highlightCells(DDventureLogic.getInstance().getCellsToAttack(), Color.RED);
+                    DDventureLogic.getInstance().setAttackMode(true);
+                    System.out.println(DDventureLogic.getInstance().isInAttackMode());
+                    for (Pair<Integer, Integer> pair : DDventureLogic.getInstance().getCellsToAttack()) {
+                        Cell cell = DDventureLogic.getInstance().getGameMap().getCell(pair.getKey(), pair.getValue());
+                        map.highlightCells(pair, DDventureView.TEAM_COLORS.get(cell.getCharacterOnCell().getTeam().getColor()));
+                    }
+                }
             }
-
-            /*
-
-                 TODO-V2:
-                     !onAction di attackButton!
-                        [LOGIC] getTurnCharacter().hasAttacked() ?
-                            true:
-                            false:
-                                [LOGIC] determinaLeCoordinateDiQualeCellaAdiacenteAlPersonaggioPresentaNemici() return -> Elenco di celle in cui ci sono i nemici
-                                [VIEW] illuminaCelleAdiacentiConNemici(elenco di celle trovato in precedenza)
-                   !onClicked di map!
-                        [LOGIC] stoAttaccando() ?
-                                true:
-                                    [VIEW] determino le coordinate matriciali della cella
-                                    [LOGIC] verificare se la cella selezionata rientra nelle celle in cui è possibile attaccare
-                                        true:
-                                            [LOGIC] determinare qual è il nemico da attaccare
-                                            [LOGIC] provaARompereLaDifesa() return int [lancia il dado]
-                                            [VIEW] avvia l'animazione e mostra a schermo il risultato
-                                                WARNING: DUE POSSIBILI IMPLEMENTAZIONI:
-                                                       A. risultato deciso a priori con model
-                                                       B. pulsante start&stop
-                                            [LOGIC] èStataRotta()?
-                                                true:
-                                                    [VIEW] avvia animazione attacco
-                                                    [LOGIC] ottengo risultato dado danno da funzione del logic
-
-                                                false: [VIEW] zio, sei uno sfigato e ciccia.
-
-                                                [LOGIC] imposta a true l'attributo hasAttacked
-             */
         });
 
-        VBox rsection = new VBox(stack, buttons);
+
+
+        // new code BorderPane CENTER: stackPane BOTTOM: startAndStopBox -> due bottoni per l'animazione
+        // end new code
+
+
+
+        VBox rsection = new VBox(animationPane, buttons);
         rsection.setSpacing(60);
         rsection.setAlignment(Pos.CENTER);
 

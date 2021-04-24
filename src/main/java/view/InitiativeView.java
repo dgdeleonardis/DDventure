@@ -38,6 +38,15 @@ public class InitiativeView extends BorderPane {
         startCalculationButton.setFont(Font.font("Alagard", 24));
         setCenter(startCalculationButton);
         BorderPane.setAlignment(startCalculationButton, Pos.CENTER);
+
+        Button goToGameButton = new Button("Inizia la partita");
+        goToGameButton.setFont(Font.font("Alagard", 24));
+        goToGameButton.setVisible(false);
+        goToGameButton.setOnAction(event -> {
+            DDventureView.getInstance().createAnOpenGameScene();
+        });
+        this.setBottom(goToGameButton);
+
         startCalculationButton.setOnAction(event -> {
             DDventureLogic.getInstance().characterTurnOrder();
             // change center section
@@ -57,6 +66,8 @@ public class InitiativeView extends BorderPane {
                 });
                 setCenter(characterInGameList);
                 BorderPane.setAlignment(characterInGameList, Pos.CENTER);
+                goToGameButton.setVisible(true);
+
             });
             Label loadingLabel = new Label("Calcolo in corso...");
             loadingLabel.setFont(Font.font("Alagard", 24));

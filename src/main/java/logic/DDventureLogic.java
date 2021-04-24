@@ -14,16 +14,36 @@ public class DDventureLogic implements ILogic{
     private Map tempMap;
     private Character tempCharacter;
     private XMLSpriteManager xmlSpriteManager;
-    private static final String SPRITE_XML_FILE_NAME = "image/animation.xml";
+    private static final String SPRITE_XML_FILE_NAME = "animation.xml";
 
     private boolean moveMode;
     private ArrayList<Pair<Integer, Integer>> cellsToMove;
     private int turnNumber;
 
     private boolean attackMode;
+    private CharacterInGame enemyToAttack;
     private ArrayList<Pair<Integer, Integer>> cellsToAttack;
 
+    private Team winnerTeam;
 
+    private final ArrayList<CharacterSprite> sprites;
+
+    private static final String[] SPRITE_NAME = {
+        "Arcer (M)",
+        "Arcer (F)",
+        "Assassin (M)",
+        "Assassin (F)",
+        "Ax (M)",
+        "Ax (F)",
+        "Mage (M)",
+        "Mage (F)",
+        "Dark Mage(M)",
+        "Dark Mage (F)",
+        "Knight (M)",
+        "Knight (F)",
+        "Swordman (M)",
+        "Swodman (F)"
+    };
 
     private final static Weapon[] DEFAULT_WEAPONS = {
             new Weapon("Spada", 8, 2),
@@ -52,6 +72,8 @@ public class DDventureLogic implements ILogic{
             new File(gameDirectory.getAbsolutePath() + "/saved_character").mkdir();
         }
         xmlSpriteManager = new XMLSpriteManager(SPRITE_XML_FILE_NAME);
+        sprites = xmlSpriteManager.getCharacterSpriteList();
+
         game = new Game();
         moveMode = false;
         attackMode = false;
@@ -323,6 +345,7 @@ public class DDventureLogic implements ILogic{
                     characterInGame.setCoordinataY(jTarget);
                     game.getMap().getCell(iTarget, jTarget).setCharacterOnCell(characterInGame);
                     flag = true;
+                    moveMode = false;
                 }
             }
         }
@@ -360,9 +383,19 @@ public class DDventureLogic implements ILogic{
         return cellsToAttack.toArray(cellsToAttackArray);
     }
 
+    @Override
+    public void setAttackMode(boolean attackMode) {
+        this.attackMode = attackMode;
+    }
+
+    @Override
+    public boolean isInAttackMode() {
+        return attackMode;
+    }
+
     private boolean isCellToAttack(Team team, int i, int j) {
         Map map = game.getMap();
-        if(i < map.getColumns() && j < map.getRows()) {
+        if((i < map.getColumns() && i >= 0) && (j>= 0 && j < map.getRows())) {
             if(map.getCell(i, j).isOccupied()) {
                 if(!map.getCell(i, j).getCharacterOnCell().getTeam().equals(team)) {
                     return true;
@@ -372,4 +405,112 @@ public class DDventureLogic implements ILogic{
         return false;
     }
 
+    public boolean isAttackable(Pair<Integer, Integer> selectedCell) {
+        for(int i = 0; i < cellsToAttack.size(); i++) {
+            if(selectedCell.getKey().intValue() == cellsToAttack.get(i).getKey().intValue() &&
+                    selectedCell.getValue().intValue() == cellsToAttack.get(i).getValue().intValue()) {
+                enemyToAttack = game.getMap().getCell(selectedCell.getKey().intValue(), selectedCell.getValue().intValue()).getCharacterOnCell();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getCharacterName(int i){
+        return game.getCharactersInGame().get(i).getName();
+    }
+
+    public void resetCharacter(int i){
+        game.getCharactersInGame().get(i).setHasAttacked(false);
+        game.getCharactersInGame().get(i).setRemainingSpeed(game.getCharactersInGame().get(i).getSpeed());
+    }
+
+    @Override
+    public boolean isCABreak(int result) {
+        int tpcModifier = getTurnCharacterInGame().getWeapon().getTpcModifier();
+        int enemyCA = enemyToAttack.getCA();
+        if((result + tpcModifier) >= enemyCA) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public CharacterSprite getTurnCharacterInGameSprite() {
+        CharacterSprite sprite;
+        for(int i = 0; i < sprites.size(); i++) {
+            sprite = sprites.get(i);
+            if(sprite.getName().equals(getTurnCharacterInGame().getAvatar())) {
+                return sprite;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void damageControll(int damage) {
+        enemyToAttack.decreaseRemainingHP(damage);
+        if (enemyToAttack.getRemainingHP() <= 0) {
+            int xEnemy = enemyToAttack.getCoordinataX();
+            int yEnemy = enemyToAttack.getCoordinataY();
+            game.getMap().getCell(xEnemy, yEnemy).setCharacterOnCell(null);
+            enemyToAttack.setCoordinataX(-1);
+            enemyToAttack.setCoordinataY(-1);
+        }
+    }
+
+    @Override
+    public boolean isEnemyDead() {
+        return enemyToAttack.getRemainingHP() <= 0;
+    }
+
+    public boolean isThereAWinner() {
+        ArrayList<Team> teams = game.getTeams();
+        int remainedTeams = 0;
+        Team winnerTeam = null;
+        int i = 0;
+        while(remainedTeams < 2 && i < teams.size()) {
+            if(teams.get(i).isInGame()) {
+                winnerTeam = teams.get(i);
+                remainedTeams++;
+            }
+            i++;
+        }
+        if(remainedTeams == 1) {
+            this.winnerTeam = winnerTeam;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String getWinnerTeamName() {
+        return winnerTeam.getName();
+    }
+
+    public String[] getWinnerTeamMembers() {
+        CharacterInGame[] members = winnerTeam.getMembers();
+        String[] arr = new String[members.length];
+        for(int i = 0; i < members.length; i++) {
+            arr[i] = members[i].getName();
+        }
+        return arr;
+    }
+
+    @Override
+    public void resetGame() {
+        game = new Game();
+        tempMap = null;
+        tempCharacter = null;
+
+        moveMode = false;
+        //cellsToMove.clear();
+        turnNumber = 0;
+
+        attackMode = false;
+        enemyToAttack = null;
+        //cellsToAttack.clear();
+
+        winnerTeam = null;
+    }
 }

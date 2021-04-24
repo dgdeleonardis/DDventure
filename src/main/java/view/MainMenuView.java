@@ -1,5 +1,6 @@
 package view;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,7 +11,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class MainMenu extends BorderPane  {
+import java.util.ResourceBundle;
+
+public class MainMenuView extends BorderPane  {
     //top
     protected Label title;
     //center
@@ -20,8 +23,9 @@ public class MainMenu extends BorderPane  {
     //bottom
     protected Button optionbutton;
 
-    public MainMenu() {
+    public MainMenuView() {
         super();
+
         setPrefSize(DDventureView.PRIMARY_STAGE_WIDTH, DDventureView.PRIMARY_STAGE_HEIGHT);
 
         //top section

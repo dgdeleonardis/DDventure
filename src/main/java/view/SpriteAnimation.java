@@ -20,14 +20,14 @@ public class SpriteAnimation extends Transition {
         this.imageView = imageView;
         this.frames = frames;
         this.setCycleDuration(duration);
-        setCycleCount(Animation.INDEFINITE);
+        setCycleCount(1);
         setInterpolator(Interpolator.LINEAR);
         this.imageView.setViewport(frames.get(0));
     }
 
     @Override
     protected void interpolate(double frac) {
-        final int index = (int) (frac * frames.size());
+        final int index = (int) (frac * (frames.size() - 1));
         imageView.setViewport(frames.get(index));
     }
 }

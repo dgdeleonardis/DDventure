@@ -14,7 +14,6 @@ import javafx.scene.text.Font;
 import logic.DDventureLogic;
 
 public class TeamCreationMenuView extends BorderPane {
-
     // general attributes
     private static final int TITLE_FONT_SIZE = 64;
     private static final int BUTTON_FONT_SIZE = 24;

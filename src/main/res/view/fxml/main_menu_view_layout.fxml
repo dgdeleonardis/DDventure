@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.Label?>
+<?import view.DDventureViewConstants?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<BorderPane fx:id="mainPane"
+        xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.MainMenuView">
+    <prefWidth>
+        <DDventureViewConstants fx:constant="MAIN_STAGE_WIDTH"/>
+    </prefWidth>
+    <prefHeight>
+        <DDventureViewConstants fx:constant="MAIN_STAGE_HEIGHT"/>
+    </prefHeight>
+
+    <top>
+        <Label fx:id="titleLabel"
+               text="%view.main_menu_view.titleLabelText"
+               textFill="white"
+               textAlignment="CENTER"
+                BorderPane.alignment="CENTER">
+                <BorderPane.margin>
+                    <Insets>
+                        <top>
+                            <DDventureViewConstants fx:constant="MEDIUM_SPACING"/>
+                        </top>
+                    </Insets>
+                </BorderPane.margin>
+        </Label>
+    </top>
+    <center>
+        <VBox fx:id="centerBox">
+            <spacing>
+                <DDventureViewConstants fx:constant="MEDIUM_SPACING"/>
+            </spacing>
+            <Button fx:id="startGameButton"
+                    text="%view.main_menu_view.startGameButtonText"
+                    onAction="#handleStartGameButton">
+                <minWidth>
+                    <DDventureViewConstants fx:constant="MIN_WIDTH_BUTTON"/>
+                </minWidth>
+            </Button>
+            <Button fx:id="loadGameButton"
+                    text="%view.main_menu_view.loadGameButtonText"
+                    onAction="#handleLoadGameButton">
+                <minWidth>
+                    <DDventureViewConstants fx:constant="MIN_WIDTH_BUTTON"/>
+                </minWidth>
+            </Button>
+        </VBox>
+    </center>
+    <bottom>
+        <Button fx:id="optionButton"
+        text="%view.main_menu_view.optionButtonText"
+        onAction="#handleOptionButton">
+        </Button>
+    </bottom>
+</BorderPane>

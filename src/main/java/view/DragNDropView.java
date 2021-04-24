@@ -42,13 +42,13 @@ public class DragNDropView extends BorderPane {
 
         // FIXME: ELIMINA!
         ArrayList<CharacterInGame> characterInGame = DDventureLogic.getInstance().getGame().getCharactersInGame();
-        characterInGame.get(0).setCoordinataX(0);
+        /*characterInGame.get(0).setCoordinataX(0);
         characterInGame.get(0).setCoordinataY(0);
         characterInGame.add(new CharacterInGame("diego", 4, 4, 5, 6, "", 8, 6, new Weapon("", 4, 5), DDventureLogic.getInstance().getGame().getTeams().get(0)));
         characterInGame.add(new CharacterInGame("diego", 4, 4, 5, 6, "", 6, 8, new Weapon("", 4, 5), DDventureLogic.getInstance().getGame().getTeams().get(0)));
         characterInGame.add(new CharacterInGame("diego", 4, 4, 5, 6, "", 1, 3, new Weapon("", 4, 5), DDventureLogic.getInstance().getGame().getTeams().get(0)));
         characterInGame.add(new CharacterInGame("diego", 4, 4, 5, 6, "", 2, 1, new Weapon("", 4, 5), DDventureLogic.getInstance().getGame().getTeams().get(0)));
-        characterInGame.add(new CharacterInGame("diego", 4, 4, 5, 6, "", 5, 0, new Weapon("", 4, 5), DDventureLogic.getInstance().getGame().getTeams().get(0)));
+        characterInGame.add(new CharacterInGame("diego", 4, 4, 5, 6, "", 5, 0, new Weapon("", 4, 5), DDventureLogic.getInstance().getGame().getTeams().get(0)));*/
         DDventureLogic.getInstance().generateRandomPositions();
         characterInGame.forEach(character -> {
             DDventureLogic.getInstance().getGameMap().getCells()[character.getCoordinataX()][character.getCoordinataY()].setCharacterOnCell(character);
